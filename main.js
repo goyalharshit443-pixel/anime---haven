@@ -129,16 +129,16 @@ if (themeToggle) {
 
 // ---------- Anime Data ----------
 const animeData = [
-  { id: 'frieren', title: 'Frieren: Beyond Journey\'s End', genre: 'seinen', rating: '9.4', year: '2023', trailer: 'https://www.youtube.com/embed/2SpKBcCkxSE', emoji: '🌿', color: '#4ade80', img: null },
+  { id: 'frieren', title: 'Frieren: Beyond Journey\'s End', genre: 'seinen', rating: '9.4', year: '2023', trailer: 'https://www.youtube.com/embed/2SpKBcCkxSE', emoji: '🌿', color: '#4ade80', img: 'images/img1.jpg' },
   { id: 'jjk', title: 'Jujutsu Kaisen', genre: 'shonen', rating: '8.9', year: '2020', trailer: 'https://www.youtube.com/embed/pkKu9hLT-t8', emoji: '⚡', color: '#e94560', img: 'images/img5.jpg' },
-  { id: 'dandadan', title: 'Dandadan', genre: 'shonen', rating: '8.7', year: '2024', trailer: 'https://www.youtube.com/embed/jfh4V5PFDA8', emoji: '👻', color: '#a855f7', img: null },
-  { id: 'solo-leveling', title: 'Solo Leveling', genre: 'seinen', rating: '8.8', year: '2024', trailer: 'https://www.youtube.com/embed/Uu4Tv5BqvJ8', emoji: '⚔️', color: '#3b82f6', img: null },
-  { id: 'apothecary', title: 'The Apothecary Diaries', genre: 'josei', rating: '8.5', year: '2023', trailer: 'https://www.youtube.com/embed/DfJE_h4MeFs', emoji: '🌺', color: '#d4a373', img: null },
-  { id: 'fruits-basket', title: 'Fruits Basket', genre: 'shojo', rating: '8.8', year: '2019', trailer: 'https://www.youtube.com/embed/Mv-2GGiCr0c', emoji: '🌸', color: '#ff9aa2', img: null },
+  { id: 'dandadan', title: 'Dandadan', genre: 'shonen', rating: '8.7', year: '2024', trailer: 'https://www.youtube.com/embed/jfh4V5PFDA8', emoji: '👻', color: '#a855f7', img: 'images/img2.jpg' },
+  { id: 'solo-leveling', title: 'Solo Leveling', genre: 'seinen', rating: '8.8', year: '2024', trailer: 'https://www.youtube.com/embed/Uu4Tv5BqvJ8', emoji: '⚔️', color: '#3b82f6', img: 'images/img6.jpg' },
+  { id: 'apothecary', title: 'The Apothecary Diaries', genre: 'josei', rating: '8.5', year: '2023', trailer: 'https://www.youtube.com/embed/DfJE_h4MeFs', emoji: '🌺', color: '#d4a373', img: 'images/img3.jpg' },
+  { id: 'fruits-basket', title: 'Fruits Basket', genre: 'shojo', rating: '8.8', year: '2019', trailer: 'https://www.youtube.com/embed/Mv-2GGiCr0c', emoji: '🌸', color: '#ff9aa2', img: 'images/img3.jpg' },
   { id: 'vinland', title: 'Vinland Saga', genre: 'seinen', rating: '8.7', year: '2019', trailer: 'https://www.youtube.com/embed/PAtHVPO8sUE', emoji: '⚓', color: '#64748b', img: 'images/img4.jpg' },
-  { id: 'demon-slayer', title: 'Demon Slayer', genre: 'shonen', rating: '8.7', year: '2019', trailer: 'https://www.youtube.com/embed/VQGCKyvzIM4', emoji: '🌊', color: '#06b6d4', img: null },
-  { id: 'nana', title: 'Nana', genre: 'josei', rating: '8.5', year: '2006', trailer: 'https://www.youtube.com/embed/kQCmpuJAiGE', emoji: '🎸', color: '#f97316', img: null },
-  { id: 'pokemon', title: 'Pokémon Horizons', genre: 'kodomomuke', rating: '7.8', year: '2023', trailer: 'https://www.youtube.com/embed/T3DnFIIqEkE', emoji: '⭐', color: '#ffd60a', img: null },
+  { id: 'demon-slayer', title: 'Demon Slayer', genre: 'shonen', rating: '8.7', year: '2019', trailer: 'https://www.youtube.com/embed/VQGCKyvzIM4', emoji: '🌊', color: '#06b6d4', img: 'images/img5.jpg' },
+  { id: 'nana', title: 'Nana', genre: 'josei', rating: '8.5', year: '2006', trailer: 'https://www.youtube.com/embed/kQCmpuJAiGE', emoji: '🎸', color: '#f97316', img: 'images/img3.jpg' },
+  { id: 'pokemon', title: 'Pokémon Horizons', genre: 'kodomomuke', rating: '7.8', year: '2023', trailer: 'https://www.youtube.com/embed/T3DnFIIqEkE', emoji: '⭐', color: '#ffd60a', img: 'images/img6.jpg' },
 ];
 
 // ---------- Search ----------

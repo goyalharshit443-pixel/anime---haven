@@ -1,0 +1,15 @@
+[
+  {
+    "id": "b2185bcf-10d2-4593-9d4e-8362e103afff",
+    "email": "test@anime.com",
+    "password": "$2a$10$gX4tCmgcDtoniivtrSxLKeRSjMMhskMN6hJjztEedIIjzUymRPxiG",
+    "favourites": [
+      {
+        "animeId": "frieren",
+        "title": "Frieren: Beyond Journey's End",
+        "addedAt": "2026-03-16T12:55:24.114Z"
+      }
+    ],
+    "createdAt": "2026-03-16T12:54:55.256Z"
+  }
+]

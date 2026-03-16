@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seinen Anime — Anime Haven</title>
+  <meta name="description" content="Explore the best seinen anime — dark themes, complex narratives, and mature storytelling on Anime Haven." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root { --genre-primary: #e05050; --genre-secondary: #0a1429; }
+    .genre-hero-bg { background: radial-gradient(ellipse at 60% 40%, rgba(139,0,0,0.3) 0%, transparent 50%), radial-gradient(ellipse at 10% 80%, rgba(10,20,41,0.4) 0%, transparent 60%), #060810; }
+    .genre-hero-title { color: #e05050; text-shadow: 0 0 60px rgba(180,0,0,0.5); }
+    .genre-hero-real-bg { background-image: url('img6.jpg'); background-size: cover; background-position: center top; }
+  </style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<header id="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <svg class="logo-icon" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="url(#lg)" stroke-width="2"/><path d="M20 8 L26 16 L20 13 L14 16 Z" fill="url(#lg)"/><path d="M12 18 Q20 30 28 18" stroke="url(#lg)" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="15" cy="20" r="2" fill="url(#lg)"/><circle cx="25" cy="20" r="2" fill="url(#lg)"/><defs><linearGradient id="lg" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e94560"/><stop offset="100%" stop-color="#a855f7"/></linearGradient></defs></svg>
+      <span class="logo-text">Anime<span class="logo-accent">Haven</span></span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="shonen.html" class="nav-link" data-genre="shonen">Shonen</a>
+      <a href="shojo.html" class="nav-link" data-genre="shojo">Shojo</a>
+      <a href="seinen.html" class="nav-link active" data-genre="seinen">Seinen</a>
+      <a href="josei.html" class="nav-link" data-genre="josei">Josei</a>
+      <a href="kodomomuke.html" class="nav-link" data-genre="kodomomuke">Kodomomuke</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-wrap"><input type="text" id="search-input" class="search-input" placeholder="Search anime..." autocomplete="off" /><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><div class="search-dropdown" id="search-dropdown"></div></div>
+      <button class="theme-toggle" id="theme-toggle"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+      <a href="signin.html" class="btn-signin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Sign In</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-nav" id="mobile-nav"><a href="index.html">Home</a><a href="shonen.html">Shonen</a><a href="shojo.html">Shojo</a><a href="seinen.html">Seinen</a><a href="josei.html">Josei</a><a href="kodomomuke.html">Kodomomuke</a><a href="signin.html">Sign In</a></div>
+</header>
+
+<section class="genre-hero">
+  <div class="genre-hero-bg genre-hero-real-bg"></div>
+  <div class="genre-hero-overlay" style="background: linear-gradient(to top, #060810 0%, rgba(6,8,16,0.65) 50%, rgba(6,8,16,0.4) 100%)"></div>
+  <div class="hero-shapes">
+    <div class="shape shape-1" style="background: radial-gradient(circle, rgba(139,0,0,0.3), transparent)"></div>
+    <div class="shape shape-2" style="background: radial-gradient(circle, rgba(10,20,41,0.5), transparent)"></div>
+  </div>
+  <div class="genre-hero-content">
+    <div class="genre-hero-label">Genre — Seinen</div>
+    <h1 class="genre-hero-title">🌑 Seinen</h1>
+    <p class="genre-hero-desc">Dark themes & complex stories for mature minds. Where art and consequence collide.</p>
+  </div>
+</section>
+
+<section class="section spotlight-section">
+  <div class="container">
+    <div class="spotlight-inner" id="frieren" style="border-color: rgba(74,222,128,0.15)">
+      <div class="spotlight-badge" style="background: linear-gradient(135deg,#4ade80,#22d3ee); color:#0a1a0a">Top Pick — Seinen</div>
+      <div class="spotlight-content">
+        <div class="spotlight-art">
+          <div class="spotlight-poster">
+            <svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="spBg" x1="0" y1="0" x2="200" y2="280" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1a3a5c"/><stop offset="50%" stop-color="#0d1f3c"/><stop offset="100%" stop-color="#060d1a"/></linearGradient>
+                <linearGradient id="spAcc" x1="0" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#4ade80"/><stop offset="100%" stop-color="#22d3ee"/></linearGradient>
+              </defs>
+              <rect width="200" height="280" fill="url(#spBg)" rx="8"/>
+              <ellipse cx="100" cy="95" rx="35" ry="42" fill="#f0d5c0" opacity="0.95"/>
+              <path d="M65 85 L50 75 L62 95Z" fill="#f0d5c0"/>
+              <path d="M135 85 L150 75 L138 95Z" fill="#f0d5c0"/>
+              <path d="M65 80 Q40 140 50 220 Q70 230 80 200 L75 150 Q65 120 70 90Z" fill="#c8c8d8" opacity="0.9"/>
+              <path d="M135 80 Q160 140 150 220 Q130 230 120 200 L125 150 Q135 120 130 90Z" fill="#c8c8d8" opacity="0.9"/>
+              <path d="M70 70 Q100 50 130 70 Q120 30 100 25 Q80 30 70 70Z" fill="#c8c8d8" opacity="0.9"/>
+              <ellipse cx="88" cy="98" rx="8" ry="6" fill="#a8d8ea"/>
+              <ellipse cx="112" cy="98" rx="8" ry="6" fill="#a8d8ea"/>
+              <circle cx="89" cy="98" r="4" fill="#1a2a3a"/><circle cx="113" cy="98" r="4" fill="#1a2a3a"/>
+              <circle cx="90" cy="96" r="1.5" fill="white"/><circle cx="114" cy="96" r="1.5" fill="white"/>
+              <path d="M65 135 Q50 200 55 275 L145 275 Q150 200 135 135 Q120 125 100 123 Q80 125 65 135Z" fill="#2a4060" opacity="0.9"/>
+              <line x1="155" y1="60" x2="145" y2="280" stroke="#c8c8d8" stroke-width="3" opacity="0.8"/>
+              <circle cx="158" cy="55" r="12" fill="none" stroke="url(#spAcc)" stroke-width="2"/>
+              <circle cx="158" cy="55" r="6" fill="url(#spAcc)" opacity="0.8"/>
+              <text x="100" y="255" text-anchor="middle" fill="url(#spAcc)" font-size="11" font-family="Outfit,sans-serif" font-weight="700" letter-spacing="2">FRIEREN</text>
+              <text x="100" y="268" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="7" font-family="Outfit,sans-serif" letter-spacing="1">BEYOND JOURNEY'S END</text>
+            </svg>
+          </div>
+          <div class="spotlight-trailer-btn" onclick="openTrailer('https://www.youtube.com/embed/2SpKBcCkxSE')">
+            <div class="play-btn-lg"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div>
+            <span>Watch Official Trailer</span>
+          </div>
+        </div>
+        <div class="spotlight-details">
+          <div class="spotlight-meta">
+            <span class="spotlight-genre-tag seinen">Seinen</span>
+            <span class="spotlight-year">2023 — 2026</span>
+            <span class="spotlight-rating">⭐ 9.4</span>
+          </div>
+          <h2 class="spotlight-title">Frieren: Beyond Journey's End</h2>
+          <p class="spotlight-synopsis">An elf mage named Frieren journeys through a world where the Hero's party has long disbanded. Reflecting on a lifetime of fleeting human connections, she seeks to understand what it truly means to know someone — even as centuries pass around her. A quiet masterpiece about time, grief, and love.</p>
+          <div class="streaming-badges">
+            <span class="stream-label">Watch on:</span>
+            <a href="https://crunchyroll.com" target="_blank" rel="noopener" class="streamer-badge crunchyroll">Crunchyroll</a>
+            <a href="https://netflix.com" target="_blank" rel="noopener" class="streamer-badge netflix">Netflix</a>
+            <a href="https://hidive.com" target="_blank" rel="noopener" class="streamer-badge hidive">HIDIVE</a>
+          </div>
+          <div class="spotlight-actions">
+            <button class="btn-primary" onclick="addToFavourites('frieren','Frieren: Beyond Journey\'s End')">+ Add to Favourites</button>
+            <button class="btn-outline" onclick="openTrailer('https://www.youtube.com/embed/2SpKBcCkxSE')">▶ Watch Trailer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: var(--bg2)">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">More <span style="color:#e05050">Seinen</span> Picks</h2>
+      <p class="section-subtitle">Complex, dark, and unforgettable</p>
+    </div>
+    <div class="recs-grid" id="seinen-recs"></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand"><span class="logo-text">Anime<span class="logo-accent">Haven</span></span><p>Your gateway to epic anime worlds.</p></div>
+    <div class="footer-links">
+      <div class="footer-col"><h4>Genres</h4><a href="shonen.html">Shonen</a><a href="shojo.html">Shojo</a><a href="seinen.html">Seinen</a><a href="josei.html">Josei</a></div>
+      <div class="footer-col"><h4>Watch On</h4><a href="https://crunchyroll.com" target="_blank">Crunchyroll</a><a href="https://netflix.com" target="_blank">Netflix</a></div>
+      <div class="footer-col"><h4>Site</h4><a href="signin.html">Sign In</a><a href="index.html">Home</a></div>
+    </div>
+  </div>
+  <div class="footer-bottom"><p>© 2026 Anime Haven • All images used under fair use / promotional rights</p></div>
+</footer>
+
+<div class="modal-overlay" id="trailer-modal"><div class="modal-box"><button class="modal-close" onclick="closeTrailer()">✕</button><div class="modal-iframe-wrap"><iframe id="trailer-iframe" src="" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+<div class="toast" id="toast"></div>
+<script src="main.js"></script>
+<script>
+  const seineAnime = [
+    { title: 'Vinland Saga', emoji: '⚓', rating: '8.7', color: '#64748b', trailer: 'https://www.youtube.com/embed/PAtHVPO8sUE', img: 'img4.jpg' },
+    { title: 'Solo Leveling', emoji: '⚔️', rating: '8.8', color: '#3b82f6', trailer: 'https://www.youtube.com/embed/Uu4Tv5BqvJ8', img: null },
+    { title: 'Berserk', emoji: '🗡️', rating: '8.6', color: '#8b0000', trailer: 'https://www.youtube.com/embed/ik4dnYKcjVg', img: null },
+    { title: 'Attack on Titan', emoji: '🏔️', rating: '9.1', color: '#b8a090', trailer: 'https://www.youtube.com/embed/MGRm4IzK1SQ', img: null },
+    { title: 'Gantz', emoji: '🖤', rating: '7.4', color: '#111', trailer: 'https://www.youtube.com/embed/lK-hFbRXvA4', img: 'Gantz-Anime-Poster.avif' },
+    { title: 'Dungeon Meshi', emoji: '🍲', rating: '8.8', color: '#f59e0b', trailer: 'https://www.youtube.com/embed/jdRBPNEOBhw', img: null },
+  ];
+  const recsGrid = document.getElementById('seinen-recs');
+  if (recsGrid) {
+    recsGrid.innerHTML = seineAnime.map(a => `
+      <div class="anime-card reveal">
+        <div class="anime-card-poster">
+          ${a.img
+            ? `<img src="${a.img}" alt="${a.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" />`
+            : `<div class="poster-placeholder" style="background: linear-gradient(135deg, ${a.color}22, ${a.color}08)"><span style="font-size:3rem">${a.emoji}</span></div>`
+          }
+          <div class="anime-card-overlay"><button class="card-watch-btn" onclick="openTrailer('${a.trailer}')">▶ Watch Trailer</button></div>
+        </div>
+        <div class="anime-card-info">
+          <div class="anime-card-title">${a.title}</div>
+          <div class="anime-card-meta"><span class="anime-genre-tag seinen">Seinen</span><span class="anime-card-rating">⭐ ${a.rating}</span></div>
+        </div>
+      </div>`).join('');
+  }
+</script>
+</body>
+</html>

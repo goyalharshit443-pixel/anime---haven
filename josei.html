@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Josei Anime — Anime Haven</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root { --genre-primary: #d4a373; --genre-secondary: #8d5524; }
+    .genre-hero-bg { background: radial-gradient(ellipse at 60% 40%, rgba(212,163,115,0.2) 0%, transparent 50%), radial-gradient(ellipse at 20% 70%, rgba(141,85,36,0.15) 0%, transparent 60%), #0d0a07; }
+    .genre-hero-title { color: #d4a373; text-shadow: 0 0 60px rgba(212,163,115,0.4); }
+    .genre-hero-real-bg { background-image: url('img4.jpg'); background-size: cover; background-position: center; }
+  </style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<header id="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <svg class="logo-icon" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="url(#lg)" stroke-width="2"/><path d="M20 8 L26 16 L20 13 L14 16 Z" fill="url(#lg)"/><path d="M12 18 Q20 30 28 18" stroke="url(#lg)" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="15" cy="20" r="2" fill="url(#lg)"/><circle cx="25" cy="20" r="2" fill="url(#lg)"/><defs><linearGradient id="lg" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e94560"/><stop offset="100%" stop-color="#a855f7"/></linearGradient></defs></svg>
+      <span class="logo-text">Anime<span class="logo-accent">Haven</span></span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html" class="nav-link">Home</a><a href="shonen.html" class="nav-link" data-genre="shonen">Shonen</a><a href="shojo.html" class="nav-link" data-genre="shojo">Shojo</a><a href="seinen.html" class="nav-link" data-genre="seinen">Seinen</a><a href="josei.html" class="nav-link active" data-genre="josei">Josei</a><a href="kodomomuke.html" class="nav-link" data-genre="kodomomuke">Kodomomuke</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-wrap"><input type="text" id="search-input" class="search-input" placeholder="Search anime..." autocomplete="off" /><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><div class="search-dropdown" id="search-dropdown"></div></div>
+      <button class="theme-toggle" id="theme-toggle"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+      <a href="signin.html" class="btn-signin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Sign In</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-nav" id="mobile-nav"><a href="index.html">Home</a><a href="shonen.html">Shonen</a><a href="shojo.html">Shojo</a><a href="seinen.html">Seinen</a><a href="josei.html">Josei</a><a href="kodomomuke.html">Kodomomuke</a><a href="signin.html">Sign In</a></div>
+</header>
+
+<section class="genre-hero">
+  <div class="genre-hero-bg genre-hero-real-bg"></div><div class="genre-hero-overlay" style="background: linear-gradient(to top, var(--bg) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.35) 100%)"></div>
+  <div class="hero-shapes"><div class="shape shape-1" style="background: radial-gradient(circle, rgba(212,163,115,0.2), transparent)"></div></div>
+  <div class="genre-hero-content">
+    <div class="genre-hero-label">Genre — Josei</div>
+    <h1 class="genre-hero-title">🍂 Josei</h1>
+    <p class="genre-hero-desc">Mature romance & slice of life. Sophisticated stories of adult women navigating love, work, and life.</p>
+  </div>
+</section>
+
+<section class="section spotlight-section">
+  <div class="container">
+    <div class="spotlight-inner">
+      <div class="spotlight-badge" style="background: linear-gradient(135deg,#d4a373,#8d5524)">Top Pick — Josei</div>
+      <div class="spotlight-content">
+        <div class="spotlight-art">
+          <div class="spotlight-poster">
+            <svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="apoBg" x1="0" y1="0" x2="200" y2="280" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1a1205"/><stop offset="100%" stop-color="#0d0a05"/></linearGradient>
+                <linearGradient id="apoAcc" x1="0" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#d4a373"/><stop offset="100%" stop-color="#8d5524"/></linearGradient>
+              </defs>
+              <rect width="200" height="280" fill="url(#apoBg)" rx="8"/>
+              <ellipse cx="100" cy="82" rx="28" ry="34" fill="#f5c8a8" opacity="0.95"/>
+              <!-- Red braids -->
+              <path d="M72 68 Q55 90 58 130 L68 140 L70 115 Q65 95 74 74Z" fill="#8b2020" opacity="0.9"/>
+              <path d="M128 68 Q145 90 142 130 L132 140 L130 115 Q135 95 126 74Z" fill="#8b2020" opacity="0.9"/>
+              <path d="M72 60 Q100 42 128 60 Q118 30 100 24 Q82 30 72 60Z" fill="#8b2020" opacity="0.9"/>
+              <ellipse cx="87" cy="82" rx="8" ry="6" fill="#a0522d" opacity="0.9"/>
+              <ellipse cx="113" cy="82" rx="8" ry="6" fill="#a0522d" opacity="0.9"/>
+              <circle cx="88" cy="82" r="4" fill="#1a0a05"/><circle cx="114" cy="82" r="4" fill="#1a0a05"/>
+              <circle cx="89" cy="80" r="1.5" fill="white"/><circle cx="115" cy="80" r="1.5" fill="white"/>
+              <ellipse cx="80" cy="90" rx="7" ry="3" fill="#ff9aa2" opacity="0.3"/>
+              <ellipse cx="120" cy="90" rx="7" ry="3" fill="#ff9aa2" opacity="0.3"/>
+              <!-- Hanfu/dress -->
+              <path d="M72 115 Q58 175 62 278 L138 278 Q142 175 128 115 Q116 105 100 103 Q84 105 72 115Z" fill="#3d1a0a" opacity="0.95"/>
+              <path d="M72 115 Q65 130 68 145 Q100 155 132 145 Q135 130 128 115 Q116 107 100 105 Q84 107 72 115Z" fill="url(#apoAcc)" opacity="0.3"/>
+              <!-- Mortar & pestle icon -->
+              <ellipse cx="150" cy="120" rx="15" ry="10" fill="none" stroke="url(#apoAcc)" stroke-width="1.5" opacity="0.6"/>
+              <line x1="145" y1="110" x2="155" y2="130" stroke="url(#apoAcc)" stroke-width="2" opacity="0.6"/>
+              <text x="100" y="256" text-anchor="middle" fill="url(#apoAcc)" font-size="9" font-family="Outfit,sans-serif" font-weight="700" letter-spacing="2">APOTHECARY DIARIES</text>
+              <text x="100" y="268" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="7" font-family="Outfit,sans-serif" letter-spacing="1">KUSURIYA NO HITORIGOTO</text>
+            </svg>
+          </div>
+          <div class="spotlight-trailer-btn" onclick="openTrailer('https://www.youtube.com/embed/DfJE_h4MeFs')">
+            <div class="play-btn-lg"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div>
+            <span>Watch Official Trailer</span>
+          </div>
+        </div>
+        <div class="spotlight-details">
+          <div class="spotlight-meta">
+            <span class="spotlight-genre-tag josei">Josei</span>
+            <span class="spotlight-year">2023 — Ongoing</span>
+            <span class="spotlight-rating">⭐ 8.5</span>
+          </div>
+          <h2 class="spotlight-title">The Apothecary Diaries</h2>
+          <p class="spotlight-synopsis">Maomao, a young apothecary's daughter, is sold into servitude at the imperial palace. Using her sharp intellect and pharmacological expertise, she solves palace mysteries while navigating court intrigue. A brilliant blend of historical mystery and dry wit.</p>
+          <div class="streaming-badges">
+            <span class="stream-label">Watch on:</span>
+            <a href="https://crunchyroll.com" target="_blank" rel="noopener" class="streamer-badge crunchyroll">Crunchyroll</a>
+            <a href="https://netflix.com" target="_blank" rel="noopener" class="streamer-badge netflix">Netflix</a>
+          </div>
+          <div class="spotlight-actions">
+            <button class="btn-primary" style="background: linear-gradient(135deg,#d4a373,#8d5524)" onclick="addToFavourites('apothecary','The Apothecary Diaries')">+ Add to Favourites</button>
+            <button class="btn-outline" onclick="openTrailer('https://www.youtube.com/embed/DfJE_h4MeFs')">▶ Watch Trailer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: var(--bg2)">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">More <span style="color:#d4a373">Josei</span> Picks</h2>
+      <p class="section-subtitle">Stories for the thoughtful heart</p>
+    </div>
+    <div class="recs-grid" id="josei-recs"></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand"><span class="logo-text">Anime<span class="logo-accent">Haven</span></span><p>Your gateway to epic anime worlds.</p></div>
+    <div class="footer-links">
+      <div class="footer-col"><h4>Genres</h4><a href="shonen.html">Shonen</a><a href="shojo.html">Shojo</a><a href="seinen.html">Seinen</a><a href="josei.html">Josei</a></div>
+      <div class="footer-col"><h4>Watch On</h4><a href="https://crunchyroll.com" target="_blank">Crunchyroll</a><a href="https://netflix.com" target="_blank">Netflix</a></div>
+      <div class="footer-col"><h4>Site</h4><a href="signin.html">Sign In</a><a href="index.html">Home</a></div>
+    </div>
+  </div>
+  <div class="footer-bottom"><p>© 2026 Anime Haven • All images used under fair use / promotional rights</p></div>
+</footer>
+
+<div class="modal-overlay" id="trailer-modal"><div class="modal-box"><button class="modal-close" onclick="closeTrailer()">✕</button><div class="modal-iframe-wrap"><iframe id="trailer-iframe" src="" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+<div class="toast" id="toast"></div>
+<script src="main.js"></script>
+<script>
+  const joseiAnime = [
+    { title: 'Nana', emoji: '🎸', rating: '8.5', color: '#f97316', trailer: 'https://www.youtube.com/embed/kQCmpuJAiGE' },
+    { title: 'Skip and Loafer', emoji: '💛', rating: '8.3', color: '#ffd60a', trailer: 'https://www.youtube.com/embed/cWoSuD2Nvw8' },
+    { title: 'Chihayafuru', emoji: '🃏', rating: '8.4', color: '#22d3ee', trailer: 'https://www.youtube.com/embed/lqTVYWDCGSg' },
+    { title: 'Princess Jellyfish', emoji: '🪼', rating: '7.9', color: '#c7ceea', trailer: 'https://www.youtube.com/embed/NJRIH-2aAZQ' },
+    { title: 'Nodame Cantabile', emoji: '🎹', rating: '8.4', color: '#f0d5c0', trailer: 'https://www.youtube.com/embed/6LwMk2Rpqus' },
+    { title: 'Kuragehime', emoji: '🌊', rating: '7.8', color: '#3b82f6', trailer: 'https://www.youtube.com/embed/NJRIH-2aAZQ' },
+  ];
+  const recsGrid = document.getElementById('josei-recs');
+  if (recsGrid) {
+    recsGrid.innerHTML = joseiAnime.map(a => `
+      <div class="anime-card reveal">
+        <div class="anime-card-poster"><div class="poster-placeholder" style="background: linear-gradient(135deg, ${a.color}22, ${a.color}08)"><span style="font-size:3rem">${a.emoji}</span></div><div class="anime-card-overlay"><button class="card-watch-btn" onclick="openTrailer('${a.trailer}')">▶ Watch Trailer</button></div></div>
+        <div class="anime-card-info"><div class="anime-card-title">${a.title}</div><div class="anime-card-meta"><span class="anime-genre-tag josei">Josei</span><span class="anime-card-rating">⭐ ${a.rating}</span></div></div>
+      </div>`).join('');
+  }
+</script>
+</body>
+</html>

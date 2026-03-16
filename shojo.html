@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shojo Anime — Anime Haven</title>
+  <meta name="description" content="Discover the best shojo anime — heartfelt romance, emotional journeys, and unforgettable characters on Anime Haven." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root { --genre-primary: #ff9aa2; --genre-secondary: #c7ceea; --genre-glow: rgba(255,154,162,0.25); }
+    .genre-hero-bg { background: radial-gradient(ellipse at 60% 40%, rgba(255,154,162,0.2) 0%, transparent 50%), radial-gradient(ellipse at 20% 70%, rgba(199,206,234,0.15) 0%, transparent 50%), #0d0d14; }
+    .genre-hero-title { color: #ff9aa2; text-shadow: 0 0 60px rgba(255,154,162,0.4); }
+    .genre-hero-real-bg { background-image: url('img3.jpg'); background-size: cover; background-position: center; }
+  </style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<header id="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <svg class="logo-icon" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="url(#lg)" stroke-width="2"/><path d="M20 8 L26 16 L20 13 L14 16 Z" fill="url(#lg)"/><path d="M12 18 Q20 30 28 18" stroke="url(#lg)" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="15" cy="20" r="2" fill="url(#lg)"/><circle cx="25" cy="20" r="2" fill="url(#lg)"/><defs><linearGradient id="lg" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e94560"/><stop offset="100%" stop-color="#a855f7"/></linearGradient></defs></svg>
+      <span class="logo-text">Anime<span class="logo-accent">Haven</span></span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="shonen.html" class="nav-link" data-genre="shonen">Shonen</a>
+      <a href="shojo.html" class="nav-link active" data-genre="shojo">Shojo</a>
+      <a href="seinen.html" class="nav-link" data-genre="seinen">Seinen</a>
+      <a href="josei.html" class="nav-link" data-genre="josei">Josei</a>
+      <a href="kodomomuke.html" class="nav-link" data-genre="kodomomuke">Kodomomuke</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-wrap"><input type="text" id="search-input" class="search-input" placeholder="Search anime..." autocomplete="off" /><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><div class="search-dropdown" id="search-dropdown"></div></div>
+      <button class="theme-toggle" id="theme-toggle"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+      <a href="signin.html" class="btn-signin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Sign In</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-nav" id="mobile-nav"><a href="index.html">Home</a><a href="shonen.html">Shonen</a><a href="shojo.html">Shojo</a><a href="seinen.html">Seinen</a><a href="josei.html">Josei</a><a href="kodomomuke.html">Kodomomuke</a><a href="signin.html">Sign In</a></div>
+</header>
+
+<section class="genre-hero">
+  <div class="genre-hero-bg genre-hero-real-bg"></div>
+  <div class="genre-hero-overlay" style="background: linear-gradient(to top, var(--bg) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.35) 100%)"></div>
+  <div class="hero-shapes">
+    <div class="shape shape-1" style="background: radial-gradient(circle, rgba(255,154,162,0.2), transparent)"></div>
+    <div class="shape shape-2" style="background: radial-gradient(circle, rgba(199,206,234,0.12), transparent)"></div>
+  </div>
+  <div class="genre-hero-content">
+    <div class="genre-hero-label">Genre — Shojo</div>
+    <h1 class="genre-hero-title">🌸 Shojo</h1>
+    <p class="genre-hero-desc">Love, emotion & personal growth. Stories of the heart that stay with you forever.</p>
+  </div>
+</section>
+
+<section class="section spotlight-section">
+  <div class="container">
+    <div class="spotlight-inner">
+      <div class="spotlight-badge" style="background: linear-gradient(135deg,#ff9aa2,#c7ceea); color:#1a0a1a">Top Pick — Shojo</div>
+      <div class="spotlight-content">
+        <div class="spotlight-art">
+          <div class="spotlight-poster">
+            <svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="fbBg" x1="0" y1="0" x2="200" y2="280" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#1a0d1a"/>
+                  <stop offset="100%" stop-color="#0d0510"/>
+                </linearGradient>
+                <linearGradient id="fbAccent" x1="0" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#ff9aa2"/>
+                  <stop offset="100%" stop-color="#c7ceea"/>
+                </linearGradient>
+              </defs>
+              <rect width="200" height="280" fill="url(#fbBg)" rx="8"/>
+              <!-- Cherry blossoms -->
+              <circle cx="30" cy="30" r="3" fill="#ff9aa2" opacity="0.5"/>
+              <circle cx="170" cy="50" r="2" fill="#c7ceea" opacity="0.5"/>
+              <circle cx="150" cy="20" r="2.5" fill="#ff9aa2" opacity="0.4"/>
+              <circle cx="60" cy="15" r="2" fill="#c7ceea" opacity="0.5"/>
+              <!-- Character body -->
+              <path d="M70 115 Q55 175 60 275 L140 275 Q145 175 130 115 Q118 104 100 102 Q82 104 70 115Z" fill="#1e1030" opacity="0.95"/>
+              <!-- Orange/red costume accent -->
+              <path d="M72 115 Q65 140 67 160 L133 160 Q135 140 128 115 Q116 106 100 104 Q84 106 72 115Z" fill="#ff9aa2" opacity="0.2"/>
+              <!-- Head -->
+              <ellipse cx="100" cy="80" rx="28" ry="34" fill="#f5c8b8" opacity="0.95"/>
+              <!-- Brown hair -->
+              <path d="M72 65 Q60 50 65 40 Q80 20 100 25 Q120 20 135 40 Q140 50 128 65" fill="#8b4513" opacity="0.9"/>
+              <path d="M72 65 Q60 80 65 100 L70 115" fill="#8b4513" opacity="0.8"/>
+              <path d="M128 65 Q140 80 135 100 L130 115" fill="#8b4513" opacity="0.8"/>
+              <!-- Eyes -->
+              <ellipse cx="89" cy="80" rx="8" ry="7" fill="#a0522d" opacity="0.9"/>
+              <ellipse cx="111" cy="80" rx="8" ry="7" fill="#a0522d" opacity="0.9"/>
+              <circle cx="90" cy="80" r="4" fill="#1a0a05"/>
+              <circle cx="112" cy="80" r="4" fill="#1a0a05"/>
+              <circle cx="91" cy="78" r="1.5" fill="white"/>
+              <circle cx="113" cy="78" r="1.5" fill="white"/>
+              <!-- Blush -->
+              <ellipse cx="82" cy="88" rx="6" ry="3" fill="#ff9aa2" opacity="0.35"/>
+              <ellipse cx="118" cy="88" rx="6" ry="3" fill="#ff9aa2" opacity="0.35"/>
+              <!-- Zodiac aura hint -->
+              <ellipse cx="100" cy="180" rx="60" ry="40" fill="url(#fbAccent)" opacity="0.05"/>
+              <text x="100" y="255" text-anchor="middle" fill="url(#fbAccent)" font-size="11" font-family="Outfit,sans-serif" font-weight="700" letter-spacing="2">FRUITS BASKET</text>
+              <text x="100" y="268" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="7" font-family="Outfit,sans-serif" letter-spacing="1">THE FINAL</text>
+            </svg>
+          </div>
+          <div class="spotlight-trailer-btn" onclick="openTrailer('https://www.youtube.com/embed/Mv-2GGiCr0c')">
+            <div class="play-btn-lg"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div>
+            <span>Watch Official Trailer</span>
+          </div>
+        </div>
+        <div class="spotlight-details">
+          <div class="spotlight-meta">
+            <span class="spotlight-genre-tag shojo">Shojo</span>
+            <span class="spotlight-year">2019 – 2021</span>
+            <span class="spotlight-rating">⭐ 8.8</span>
+          </div>
+          <h2 class="spotlight-title">Fruits Basket: The Final</h2>
+          <p class="spotlight-synopsis">Tohru Honda stumbles upon the secret of the Sohma family — members who transform into animals of the zodiac when hugged by someone of the opposite sex. A heartwarming story of love, trauma, and breaking cycles of pain. One of shojo's all-time masterpieces.</p>
+          <div class="streaming-badges">
+            <span class="stream-label">Watch on:</span>
+            <a href="https://crunchyroll.com" target="_blank" rel="noopener" class="streamer-badge crunchyroll">Crunchyroll</a>
+            <a href="https://funimation.com" target="_blank" rel="noopener" class="streamer-badge hidive">Funimation</a>
+          </div>
+          <div class="spotlight-actions">
+            <button class="btn-primary" style="background: linear-gradient(135deg,#ff9aa2,#c7ceea); color:#1a0a1a" onclick="addToFavourites('fruits-basket','Fruits Basket')">+ Add to Favourites</button>
+            <button class="btn-outline" onclick="openTrailer('https://www.youtube.com/embed/Mv-2GGiCr0c')">▶ Watch Trailer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: var(--bg2)">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">More <span style="color:#ff9aa2">Shojo</span> Picks</h2>
+      <p class="section-subtitle">Romance, drama, and everything in between</p>
+    </div>
+    <div class="recs-grid" id="shojo-recs"></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand"><span class="logo-text">Anime<span class="logo-accent">Haven</span></span><p>Your gateway to epic anime worlds.</p></div>
+    <div class="footer-links">
+      <div class="footer-col"><h4>Genres</h4><a href="shonen.html">Shonen</a><a href="shojo.html">Shojo</a><a href="seinen.html">Seinen</a><a href="josei.html">Josei</a></div>
+      <div class="footer-col"><h4>Watch On</h4><a href="https://crunchyroll.com" target="_blank">Crunchyroll</a><a href="https://netflix.com" target="_blank">Netflix</a></div>
+      <div class="footer-col"><h4>Site</h4><a href="signin.html">Sign In</a><a href="index.html">Home</a></div>
+    </div>
+  </div>
+  <div class="footer-bottom"><p>© 2026 Anime Haven • All images used under fair use / promotional rights</p></div>
+</footer>
+
+<div class="modal-overlay" id="trailer-modal"><div class="modal-box"><button class="modal-close" onclick="closeTrailer()">✕</button><div class="modal-iframe-wrap"><iframe id="trailer-iframe" src="" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+<div class="toast" id="toast"></div>
+<script src="main.js"></script>
+<script>
+  const shojoAnime = [
+    { title: 'Kimi ni Todoke', emoji: '🌸', rating: '8.1', color: '#ff9aa2', trailer: 'https://www.youtube.com/embed/wkZ5oFxZMiE', img: null },
+    { title: 'Clannad: After Story', emoji: '🍂', rating: '9.0', color: '#f97316', trailer: 'https://www.youtube.com/embed/s3Pnv9HhQY8', img: null },
+    { title: 'Nana', emoji: '🎸', rating: '8.5', color: '#f97316', trailer: 'https://www.youtube.com/embed/kQCmpuJAiGE', img: null },
+    { title: 'Ouran High School', emoji: '🌹', rating: '8.2', color: '#ffd700', trailer: 'https://www.youtube.com/embed/E6TFpORKJzU', img: null },
+    { title: 'Your Lie in April', emoji: '🎵', rating: '8.7', color: '#c7ceea', trailer: 'https://www.youtube.com/embed/uo9N_1bJMwM', img: 'img3.jpg' },
+    { title: 'Skip and Loafer', emoji: '💛', rating: '8.3', color: '#ffd60a', trailer: 'https://www.youtube.com/embed/cWoSuD2Nvw8', img: null },
+  ];
+  const recsGrid = document.getElementById('shojo-recs');
+  if (recsGrid) {
+    recsGrid.innerHTML = shojoAnime.map(a => `
+      <div class="anime-card reveal">
+        <div class="anime-card-poster">
+          ${a.img ? `<img src="${a.img}" alt="${a.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" />` : `<div class="poster-placeholder" style="background: linear-gradient(135deg, ${a.color}22, ${a.color}08)"><span style="font-size:3rem">${a.emoji}</span></div>`}
+          <div class="anime-card-overlay"><button class="card-watch-btn" onclick="openTrailer('${a.trailer}')">▶ Watch Trailer</button></div>
+        </div>
+        <div class="anime-card-info">
+          <div class="anime-card-title">${a.title}</div>
+          <div class="anime-card-meta"><span class="anime-genre-tag shojo">Shojo</span><span class="anime-card-rating">⭐ ${a.rating}</span></div>
+        </div>
+      </div>`).join('');
+  }
+</script>
+</body>
+</html>

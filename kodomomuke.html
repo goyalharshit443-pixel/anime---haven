@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kodomomuke Anime — Anime Haven</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root { --genre-primary: #ffd60a; --genre-secondary: #00bbf9; }
+    .genre-hero-bg { background: radial-gradient(ellipse at 50% 40%, rgba(255,214,10,0.18) 0%, transparent 50%), radial-gradient(ellipse at 80% 70%, rgba(0,187,249,0.12) 0%, transparent 50%), #0d0d14; }
+    .genre-hero-title { color: #ffd60a; text-shadow: 0 0 60px rgba(255,214,10,0.4); }
+    .genre-hero-real-bg { background-image: url('img2.jpg'); background-size: cover; background-position: center top; }
+  </style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<header id="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <svg class="logo-icon" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="18" stroke="url(#lg)" stroke-width="2"/><path d="M20 8 L26 16 L20 13 L14 16 Z" fill="url(#lg)"/><path d="M12 18 Q20 30 28 18" stroke="url(#lg)" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="15" cy="20" r="2" fill="url(#lg)"/><circle cx="25" cy="20" r="2" fill="url(#lg)"/><defs><linearGradient id="lg" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e94560"/><stop offset="100%" stop-color="#a855f7"/></linearGradient></defs></svg>
+      <span class="logo-text">Anime<span class="logo-accent">Haven</span></span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html" class="nav-link">Home</a><a href="shonen.html" class="nav-link" data-genre="shonen">Shonen</a><a href="shojo.html" class="nav-link" data-genre="shojo">Shojo</a><a href="seinen.html" class="nav-link" data-genre="seinen">Seinen</a><a href="josei.html" class="nav-link" data-genre="josei">Josei</a><a href="kodomomuke.html" class="nav-link active" data-genre="kodomomuke">Kodomomuke</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-wrap"><input type="text" id="search-input" class="search-input" placeholder="Search anime..." autocomplete="off" /><svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><div class="search-dropdown" id="search-dropdown"></div></div>
+      <button class="theme-toggle" id="theme-toggle"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+      <a href="signin.html" class="btn-signin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Sign In</a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-nav" id="mobile-nav"><a href="index.html">Home</a><a href="shonen.html">Shonen</a><a href="shojo.html">Shojo</a><a href="seinen.html">Seinen</a><a href="josei.html">Josei</a><a href="kodomomuke.html">Kodomomuke</a><a href="signin.html">Sign In</a></div>
+</header>
+
+<section class="genre-hero">
+  <div class="genre-hero-bg genre-hero-real-bg"></div><div class="genre-hero-overlay" style="background: linear-gradient(to top, var(--bg) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.35) 100%)"></div>
+  <div class="hero-shapes"><div class="shape shape-1" style="background: radial-gradient(circle, rgba(255,214,10,0.2), transparent)"></div><div class="shape shape-2" style="background: radial-gradient(circle, rgba(0,187,249,0.15), transparent)"></div></div>
+  <div class="genre-hero-content">
+    <div class="genre-hero-label">Genre — Kodomomuke</div>
+    <h1 class="genre-hero-title">⭐ Kodomomuke</h1>
+    <p class="genre-hero-desc">Family-friendly adventure & wonder. Stories that delight all ages and spark imagination.</p>
+  </div>
+</section>
+
+<section class="section spotlight-section">
+  <div class="container">
+    <div class="spotlight-inner">
+      <div class="spotlight-badge" style="background: linear-gradient(135deg,#ffd60a,#00bbf9); color:#1a1a00">Top Pick — Kodomomuke</div>
+      <div class="spotlight-content">
+        <div class="spotlight-art">
+          <div class="spotlight-poster">
+            <svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="pkBg" x1="0" y1="0" x2="200" y2="280" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#0d1520"/><stop offset="100%" stop-color="#050a14"/></linearGradient>
+                <linearGradient id="pkAcc" x1="0" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#ffd60a"/><stop offset="100%" stop-color="#00bbf9"/></linearGradient>
+              </defs>
+              <rect width="200" height="280" fill="url(#pkBg)" rx="8"/>
+              <!-- Stars background -->
+              <circle cx="20" cy="20" r="1.5" fill="#ffd60a" opacity="0.6"/>
+              <circle cx="170" cy="30" r="1" fill="white" opacity="0.5"/>
+              <circle cx="40" cy="50" r="1" fill="white" opacity="0.4"/>
+              <circle cx="180" cy="80" r="1.5" fill="#00bbf9" opacity="0.5"/>
+              <circle cx="10" cy="100" r="1" fill="white" opacity="0.3"/>
+              <!-- Pokeball central icon -->
+              <circle cx="100" cy="110" r="55" fill="none" stroke="url(#pkAcc)" stroke-width="1.5" opacity="0.3"/>
+              <circle cx="100" cy="110" r="40" fill="none" stroke="url(#pkAcc)" stroke-width="1" opacity="0.2"/>
+              <!-- Pokeball design -->
+              <circle cx="100" cy="110" r="32" fill="#cc0000" opacity="0.8"/>
+              <path d="M68 110 A32 32 0 0 1 132 110 Z" fill="#cc0000" opacity="0.9"/>
+              <rect x="68" y="108" width="64" height="4" fill="#1a1a1a"/>
+              <circle cx="100" cy="110" r="10" fill="#f0f0f0"/>
+              <circle cx="100" cy="110" r="6" fill="white" stroke="#1a1a1a" stroke-width="2"/>
+              <!-- Lightning bolt icon (Pikachu energy) -->
+              <path d="M118 60 L108 80 L115 80 L102 105 L120 78 L112 78 Z" fill="#ffd60a" opacity="0.9"/>
+              <!-- Trainer silhouette -->
+              <path d="M72 185 Q65 220 68 278 L82 278 L84 225 L100 220 L116 225 L118 278 L132 278 Q135 220 128 185 Q115 175 100 173 Q85 175 72 185Z" fill="#1a2840" opacity="0.9"/>
+              <ellipse cx="100" cy="165" rx="22" ry="26" fill="#f5c0a0" opacity="0.95"/>
+              <path d="M78 150 Q100 138 122 150 Q115 128 100 124 Q85 128 78 150Z" fill="#1a2840" opacity="0.9"/>
+              <text x="100" y="256" text-anchor="middle" fill="url(#pkAcc)" font-size="13" font-family="Outfit,sans-serif" font-weight="900" letter-spacing="2">POKÉMON</text>
+              <text x="100" y="269" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="7" font-family="Outfit,sans-serif" letter-spacing="1">HORIZONS: THE SERIES</text>
+            </svg>
+          </div>
+          <div class="spotlight-trailer-btn" onclick="openTrailer('https://www.youtube.com/embed/T3DnFIIqEkE')">
+            <div class="play-btn-lg"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div>
+            <span>Watch Official Trailer</span>
+          </div>
+        </div>
+        <div class="spotlight-details">
+          <div class="spotlight-meta">
+            <span class="spotlight-genre-tag kodomomuke">Kodomomuke</span>
+            <span class="spotlight-year">2023 — Ongoing</span>
+            <span class="spotlight-rating">⭐ 7.8</span>
+          </div>
+          <h2 class="spotlight-title">Pokémon Horizons</h2>
+          <p class="spotlight-synopsis">A new chapter begins as Liko and Roy set off on their own Pokémon journey, joining the Rising Volt Tacklers crew aboard an airship. A fresh start for the iconic franchise, introducing new characters while maintaining the magic of friendship and discovery that has captivated generations.</p>
+          <div class="streaming-badges">
+            <span class="stream-label">Watch on:</span>
+            <a href="https://netflix.com" target="_blank" rel="noopener" class="streamer-badge netflix">Netflix</a>
+          </div>
+          <div class="spotlight-actions">
+            <button class="btn-primary" style="background: linear-gradient(135deg,#ffd60a,#f09000); color:#1a1a00" onclick="addToFavourites('pokemon','Pokémon Horizons')">+ Add to Favourites</button>
+            <button class="btn-outline" onclick="openTrailer('https://www.youtube.com/embed/T3DnFIIqEkE')">▶ Watch Trailer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background: var(--bg2)">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">More <span style="color:#ffd60a">Kodomomuke</span> Picks</h2>
+      <p class="section-subtitle">For the young — and the young at heart</p>
+    </div>
+    <div class="recs-grid" id="kodomo-recs"></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand"><span class="logo-text">Anime<span class="logo-accent">Haven</span></span><p>Your gateway to epic anime worlds.</p></div>
+    <div class="footer-links">
+      <div class="footer-col"><h4>Genres</h4><a href="shonen.html">Shonen</a><a href="shojo.html">Shojo</a><a href="seinen.html">Seinen</a><a href="josei.html">Josei</a></div>
+      <div class="footer-col"><h4>Watch On</h4><a href="https://crunchyroll.com" target="_blank">Crunchyroll</a><a href="https://netflix.com" target="_blank">Netflix</a></div>
+      <div class="footer-col"><h4>Site</h4><a href="signin.html">Sign In</a><a href="index.html">Home</a></div>
+    </div>
+  </div>
+  <div class="footer-bottom"><p>© 2026 Anime Haven • All images used under fair use / promotional rights</p></div>
+</footer>
+
+<div class="modal-overlay" id="trailer-modal"><div class="modal-box"><button class="modal-close" onclick="closeTrailer()">✕</button><div class="modal-iframe-wrap"><iframe id="trailer-iframe" src="" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></div></div></div>
+<div class="toast" id="toast"></div>
+<script src="main.js"></script>
+<script>
+  const kodomoAnime = [
+    { title: 'Doraemon', emoji: '🔵', rating: '7.9', color: '#00bbf9', trailer: 'https://www.youtube.com/embed/LZTCi3BQH4U' },
+    { title: 'Cardcaptor Sakura', emoji: '🌟', rating: '8.3', color: '#ff9aa2', trailer: 'https://www.youtube.com/embed/Y5JCvjBB-SA' },
+    { title: 'Precure', emoji: '💖', rating: '7.5', color: '#ff9aa2', trailer: 'https://www.youtube.com/embed/uU7csCWPCiQ' },
+    { title: 'Digimon Adventure', emoji: '🦕', rating: '8.0', color: '#3b82f6', trailer: 'https://www.youtube.com/embed/jS9wKKVSMCM' },
+    { title: 'Beyblade X', emoji: '🌀', rating: '7.2', color: '#ffd60a', trailer: 'https://www.youtube.com/embed/4XYhIH9CXdM' },
+    { title: 'Yo-kai Watch', emoji: '👻', rating: '7.0', color: '#a855f7', trailer: 'https://www.youtube.com/embed/3QFNhbdUFV8' },
+  ];
+  const recsGrid = document.getElementById('kodomo-recs');
+  if (recsGrid) {
+    recsGrid.innerHTML = kodomoAnime.map(a => `
+      <div class="anime-card reveal">
+        <div class="anime-card-poster"><div class="poster-placeholder" style="background: linear-gradient(135deg, ${a.color}22, ${a.color}08)"><span style="font-size:3rem">${a.emoji}</span></div><div class="anime-card-overlay"><button class="card-watch-btn" onclick="openTrailer('${a.trailer}')">▶ Watch Trailer</button></div></div>
+        <div class="anime-card-info"><div class="anime-card-title">${a.title}</div><div class="anime-card-meta"><span class="anime-genre-tag kodomomuke">Kodomomuke</span><span class="anime-card-rating">⭐ ${a.rating}</span></div></div>
+      </div>`).join('');
+  }
+</script>
+</body>
+</html>

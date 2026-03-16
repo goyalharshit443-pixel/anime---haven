@@ -1,0 +1,255 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shonen Anime â€” Anime Haven</title>
+  <meta name="description" content="Explore the best shonen anime â€” epic battles, friendship, and power. Find trailers, recommendations, and more on Anime Haven." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root { --genre-primary: #ff3b30; --genre-secondary: #ff9500; --genre-glow: rgba(255,59,48,0.25); }
+    .genre-hero-bg { background: radial-gradient(ellipse at 60% 40%, rgba(255,59,48,0.25) 0%, transparent 50%), radial-gradient(ellipse at 10% 80%, rgba(255,149,0,0.15) 0%, transparent 50%), #0d0d14; }
+    .genre-hero-title { color: var(--genre-primary); text-shadow: 0 0 60px rgba(255,59,48,0.4); }
+    .genre-hero-real-bg { background-image: url('images/img5.jpg'); background-size: cover; background-position: center; }
+    .genre-section-accent { color: var(--genre-primary); }
+    .genre-btn { background: linear-gradient(135deg, #ff3b30, #ff7500); }
+  </style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+
+<header id="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="18" stroke="url(#logoGrad)" stroke-width="2"/>
+        <path d="M20 8 L26 16 L20 13 L14 16 Z" fill="url(#logoGrad)"/>
+        <path d="M12 18 Q20 30 28 18" stroke="url(#logoGrad)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <circle cx="15" cy="20" r="2" fill="url(#logoGrad)"/>
+        <circle cx="25" cy="20" r="2" fill="url(#logoGrad)"/>
+        <defs><linearGradient id="logoGrad" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#e94560"/><stop offset="100%" stop-color="#a855f7"/></linearGradient></defs>
+      </svg>
+      <span class="logo-text">Anime<span class="logo-accent">Haven</span></span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="shonen.html" class="nav-link active" data-genre="shonen">Shonen</a>
+      <a href="shojo.html" class="nav-link" data-genre="shojo">Shojo</a>
+      <a href="seinen.html" class="nav-link" data-genre="seinen">Seinen</a>
+      <a href="josei.html" class="nav-link" data-genre="josei">Josei</a>
+      <a href="kodomomuke.html" class="nav-link" data-genre="kodomomuke">Kodomomuke</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-wrap">
+        <input type="text" id="search-input" class="search-input" placeholder="Search anime..." autocomplete="off" />
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <div class="search-dropdown" id="search-dropdown"></div>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <a href="signin.html" class="btn-signin">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Sign In
+      </a>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-nav" id="mobile-nav">
+    <a href="index.html">Home</a>
+    <a href="shonen.html">Shonen</a>
+    <a href="shojo.html">Shojo</a>
+    <a href="seinen.html">Seinen</a>
+    <a href="josei.html">Josei</a>
+    <a href="kodomomuke.html">Kodomomuke</a>
+    <a href="signin.html">Sign In</a>
+  </div>
+</header>
+
+<!-- GENRE HERO -->
+<section class="genre-hero">
+  <div class="genre-hero-bg genre-hero-real-bg"></div>
+  <div class="genre-hero-overlay" style="background: linear-gradient(to top, var(--bg) 0%, rgba(0,0,0,0.6) 50%, rgba(0,0,0,0.35) 100%)"></div>
+  <div class="hero-shapes">
+    <div class="shape shape-1" style="background: radial-gradient(circle, rgba(255,59,48,0.25), transparent)"></div>
+    <div class="shape shape-2" style="background: radial-gradient(circle, rgba(255,149,0,0.15), transparent)"></div>
+  </div>
+  <div class="genre-hero-content">
+    <div class="genre-hero-label">Genre â€” Shonen</div>
+    <h1 class="genre-hero-title">âš¡ Shonen</h1>
+    <p class="genre-hero-desc">Power, friendship & epic battles. Stories of young heroes rising beyond their limits.</p>
+  </div>
+</section>
+
+<!-- SPOTLIGHT -->
+<section class="section spotlight-section">
+  <div class="container">
+    <div class="spotlight-inner" id="jjk">
+      <div class="spotlight-badge" style="background: linear-gradient(135deg,#ff3b30,#ff9500)">Top Pick â€” Shonen</div>
+      <div class="spotlight-content">
+        <div class="spotlight-art">
+          <div class="spotlight-poster">
+            <svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="jjkBg" x1="0" y1="0" x2="200" y2="280" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#1a0510"/>
+                  <stop offset="100%" stop-color="#05020a"/>
+                </linearGradient>
+                <linearGradient id="jjkAccent" x1="0" y1="0" x2="200" y2="0" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#ff3b30"/>
+                  <stop offset="100%" stop-color="#ff9500"/>
+                </linearGradient>
+              </defs>
+              <rect width="200" height="280" fill="url(#jjkBg)" rx="8"/>
+              <!-- Cursed energy burst -->
+              <ellipse cx="100" cy="140" rx="80" ry="80" fill="url(#jjkAccent)" opacity="0.07"/>
+              <!-- Body -->
+              <path d="M75 110 Q65 180 70 280 L130 280 Q135 180 125 110 Q115 100 100 98 Q85 100 75 110Z" fill="#1e1e2e" opacity="0.95"/>
+              <!-- Head -->
+              <ellipse cx="100" cy="82" rx="30" ry="36" fill="#f5c0a0" opacity="0.95"/>
+              <!-- Spiky hair -->
+              <path d="M70 65 L58 30 L73 60" fill="#1a1a2e"/>
+              <path d="M80 58 L72 20 L86 55" fill="#1a1a2e"/>
+              <path d="M92 53 L90 15 L100 52" fill="#1a1a2e"/>
+              <path d="M108 53 L110 15 L120 52" fill="#1a1a2e"/>
+              <path d="M120 58 L128 20 L114 55" fill="#1a1a2e"/>
+              <path d="M130 65 L142 30 L127 60" fill="#1a1a2e"/>
+              <!-- Eyes with cursed energy -->
+              <ellipse cx="88" cy="83" rx="9" ry="7" fill="white"/>
+              <ellipse cx="112" cy="83" rx="9" ry="7" fill="white"/>
+              <circle cx="89" cy="83" r="5" fill="#1a0a0a"/>
+              <circle cx="113" cy="83" r="5" fill="#1a0a0a"/>
+              <!-- Cursed marks -->
+              <path d="M72 95 Q65 105 70 115" stroke="#ff3b30" stroke-width="1.5" fill="none" opacity="0.7"/>
+              <path d="M128 95 Q135 105 130 115" stroke="#ff3b30" stroke-width="1.5" fill="none" opacity="0.7"/>
+              <!-- Title -->
+              <text x="100" y="255" text-anchor="middle" fill="url(#jjkAccent)" font-size="11" font-family="Outfit,sans-serif" font-weight="700" letter-spacing="2">JUJUTSU KAISEN</text>
+              <text x="100" y="268" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="7" font-family="Outfit,sans-serif" letter-spacing="1">CURSED ENERGY AWAITS</text>
+            </svg>
+          </div>
+          <div class="spotlight-trailer-btn" onclick="openTrailer('https://www.youtube.com/embed/pkKu9hLT-t8')">
+            <div class="play-btn-lg"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div>
+            <span>Watch Official Trailer</span>
+          </div>
+        </div>
+        <div class="spotlight-details">
+          <div class="spotlight-meta">
+            <span class="spotlight-genre-tag shonen">Shonen</span>
+            <span class="spotlight-year">2020 â€” Ongoing</span>
+            <span class="spotlight-rating">â­ 8.9</span>
+          </div>
+          <h2 class="spotlight-title">Jujutsu Kaisen</h2>
+          <p class="spotlight-synopsis">High schooler Yuji Itadori swallows a cursed finger belonging to the demon Ryomen Sukuna to save his friends â€” and suddenly finds himself embroiled in a world of Jujutsu sorcerers, cursed spirits, and impossible battles. One of the most explosive action anime of the decade.</p>
+          <div class="streaming-badges">
+            <span class="stream-label">Watch on:</span>
+            <a href="https://crunchyroll.com" target="_blank" rel="noopener" class="streamer-badge crunchyroll">Crunchyroll</a>
+            <a href="https://netflix.com" target="_blank" rel="noopener" class="streamer-badge netflix">Netflix</a>
+          </div>
+          <div class="spotlight-actions">
+            <button class="btn-primary" onclick="addToFavourites('jjk','Jujutsu Kaisen')">+ Add to Favourites</button>
+            <button class="btn-outline" onclick="openTrailer('https://www.youtube.com/embed/pkKu9hLT-t8')">â–¶ Watch Trailer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RECOMMENDATIONS -->
+<section class="section" style="background: var(--bg2)">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">More <span style="color:#ff3b30">Shonen</span> Picks</h2>
+      <p class="section-subtitle">Fan-favourite titles in the genre</p>
+    </div>
+    <div class="recs-grid" id="shonen-recs"></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="logo-text">Anime<span class="logo-accent">Haven</span></span>
+      <p>Your gateway to epic anime worlds.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-link">ð•</a>
+        <a href="#" class="social-link">â–¶</a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Genres</h4>
+        <a href="shonen.html">Shonen</a>
+        <a href="shojo.html">Shojo</a>
+        <a href="seinen.html">Seinen</a>
+        <a href="josei.html">Josei</a>
+        <a href="kodomomuke.html">Kodomomuke</a>
+      </div>
+      <div class="footer-col">
+        <h4>Watch On</h4>
+        <a href="https://crunchyroll.com" target="_blank">Crunchyroll</a>
+        <a href="https://netflix.com" target="_blank">Netflix</a>
+        <a href="https://hidive.com" target="_blank">HIDIVE</a>
+      </div>
+      <div class="footer-col">
+        <h4>Site</h4>
+        <a href="signin.html">Sign In</a>
+        <a href="index.html">Home</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>Â© 2026 Anime Haven â€¢ All images used under fair use / promotional rights</p>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="trailer-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeTrailer()">âœ•</button>
+    <div class="modal-iframe-wrap">
+      <iframe id="trailer-iframe" src="" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="main.js"></script>
+<script>
+  const shonenAnime = [
+    { title: 'Demon Slayer', emoji: 'ðŸŒŠ', rating: '8.7', year: '2019', color: '#06b6d4', trailer: 'https://www.youtube.com/embed/VQGCKyvzIM4' },
+    { title: 'One Piece', emoji: 'ðŸ´â€â˜ ï¸', rating: '9.0', year: '1999', color: '#ff9500', trailer: 'https://www.youtube.com/embed/S8_YwFLCh4U' },
+    { title: 'My Hero Academia', emoji: 'ðŸ’ª', rating: '8.4', year: '2016', color: '#22d3ee', trailer: 'https://www.youtube.com/embed/EP_oBNEHzmY' },
+    { title: 'Dandadan', emoji: 'ðŸ‘»', rating: '8.7', year: '2024', color: '#a855f7', trailer: 'https://www.youtube.com/embed/jfh4V5PFDA8' },
+    { title: 'Bleach: TYBW', emoji: 'âš”ï¸', rating: '8.9', year: '2022', color: '#f0f0f0', trailer: 'https://www.youtube.com/embed/qg4B_VfhYDQ' },
+    { title: 'Haikyu!!', emoji: 'ðŸ', rating: '8.7', year: '2014', color: '#f97316', trailer: 'https://www.youtube.com/embed/xmCHMLBKwso' },
+  ];
+
+  const recsGrid = document.getElementById('shonen-recs');
+  if (recsGrid) {
+    recsGrid.innerHTML = shonenAnime.map(a => `
+      <div class="anime-card reveal">
+        <div class="anime-card-poster">
+          <div class="poster-placeholder" style="background: linear-gradient(135deg, ${a.color}22, ${a.color}08)">
+            <span style="font-size:3rem">${a.emoji}</span>
+          </div>
+          <div class="anime-card-overlay">
+            <button class="card-watch-btn" onclick="openTrailer('${a.trailer}')">â–¶ Watch Trailer</button>
+          </div>
+        </div>
+        <div class="anime-card-info">
+          <div class="anime-card-title">${a.title}</div>
+          <div class="anime-card-meta">
+            <span class="anime-genre-tag shonen">Shonen</span>
+            <span class="anime-card-rating">â­ ${a.rating}</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+</script>
+</body>
+</html>

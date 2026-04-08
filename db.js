@@ -36,6 +36,7 @@ async function initDB() {
       video_url TEXT,
       photo_url TEXT,
       tags TEXT,
+      views INTEGER DEFAULT 0,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
 
@@ -46,6 +47,7 @@ async function initDB() {
       video_url TEXT,
       photo_url TEXT,
       tags TEXT,
+      views INTEGER DEFAULT 0,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
 
@@ -56,6 +58,7 @@ async function initDB() {
       video_url TEXT,
       photo_url TEXT,
       tags TEXT,
+      views INTEGER DEFAULT 0,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
 
@@ -66,6 +69,7 @@ async function initDB() {
       video_url TEXT,
       photo_url TEXT,
       tags TEXT,
+      views INTEGER DEFAULT 0,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
 
@@ -76,6 +80,7 @@ async function initDB() {
       video_url TEXT,
       photo_url TEXT,
       tags TEXT,
+      views INTEGER DEFAULT 0,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
 
@@ -85,6 +90,16 @@ async function initDB() {
       category TEXT NOT NULL,
       title TEXT,
       added_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY (user_id, anime_id, category),
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS last_watched (
+      user_id TEXT NOT NULL,
+      anime_id TEXT NOT NULL,
+      category TEXT NOT NULL,
+      title TEXT,
+      watched_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       PRIMARY KEY (user_id, anime_id, category),
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );
@@ -99,6 +114,16 @@ async function initDB() {
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );
   `);
+
+  const alterTables = ['shonen', 'shojo', 'seinen', 'josei', 'kodomomuke'];
+  for (const table of alterTables) {
+    try {
+      await db.exec(`ALTER TABLE ${table} ADD COLUMN views INTEGER DEFAULT 0;`);
+    } catch (err) {
+      // Column already exists or cannot be added; ignore safely.
+    }
+  }
+
   console.log('Database initialized successfully.');
 }
 

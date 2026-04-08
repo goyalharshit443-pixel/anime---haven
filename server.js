@@ -218,6 +218,48 @@ app.get('/api/animes/:category', async (req, res) => {
   }
 });
 
+app.get('/api/trending', async (req, res) => {
+  try {
+    const db = await getDB();
+    const limit = parseInt(req.query.limit) || 10;
+    
+    // Get top anime by views from all categories
+    const queries = allowedTables.map(category => 
+      `SELECT *, '${category}' as category FROM ${category} ORDER BY views DESC LIMIT ${limit}`
+    );
+    
+    const allResults = [];
+    for (const query of queries) {
+      const results = await db.all(query);
+      allResults.push(...results);
+    }
+    
+    // Sort by views descending and take top limit
+    allResults.sort((a, b) => b.views - a.views);
+    const trending = allResults.slice(0, limit);
+    
+    res.json({ trending });
+  } catch (err) {
+    console.error('Trending Error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.post('/api/anime/:category/:id/view', async (req, res) => {
+  try {
+    const { category, id } = req.params;
+    if (!allowedTables.includes(category)) return res.status(400).json({ error: 'Invalid anime category.' });
+    
+    const db = await getDB();
+    await db.run(`UPDATE ${category} SET views = views + 1 WHERE id = ?`, [id]);
+    
+    res.json({ message: 'View incremented' });
+  } catch (err) {
+    console.error('View Increment Error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // ============================================================
 // FAVOURITES & LAST WATCHED ROUTES
 // ============================================================

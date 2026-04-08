@@ -967,6 +967,43 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   font-size: 0.78rem;
   color: #ffd60a;
 }
+.anime-card-views {
+  font-size: 0.72rem;
+  color: var(--text2);
+}
+
+.contributor-cta-section {
+  padding: 4rem 0 2rem;
+  background: radial-gradient(circle at top, rgba(234,76,137,.08), transparent 38%), rgba(12,12,26,.95);
+}
+.contributor-cta-container {
+  display: grid;
+  grid-template-columns: 1.3fr auto;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 2rem 2rem 1.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(15,15,28,.96);
+}
+.contributor-cta-section .section-eyebrow {
+  color: var(--accent);
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 1.8px;
+  margin-bottom: 0.75rem;
+}
+.contributor-cta-section .section-title {
+  margin-bottom: 0.75rem;
+}
+.contributor-cta-section .section-subtitle {
+  max-width: 32rem;
+  margin-bottom: 0;
+}
+.btn-large {
+  padding: 1rem 1.75rem;
+  font-size: 1rem;
+}
 
 /* ---------- Spotlight ---------- */
 .spotlight-section { background: var(--bg3); overflow: hidden; }

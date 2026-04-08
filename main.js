@@ -131,6 +131,8 @@ const animeData = [
   { id: 'nana', title: 'Nana', genre: 'josei', rating: '8.5', year: '2006', trailer: 'https://www.youtube.com/embed/kQCmpuJAiGE', emoji: '🎸', color: '#f97316', img: 'images/img3.jpg' },
   { id: 'pokemon', title: 'Pokémon Horizons', genre: 'kodomomuke', rating: '7.8', year: '2023', trailer: 'https://www.youtube.com/embed/T3DnFIIqEkE', emoji: '⭐', color: '#ffd60a', img: 'images/img6.jpg' },
 ];
+const API_BASE = window.API_BASE_URL || '';
+
 
 // ---------- Search ----------
 const searchInput = document.getElementById('search-input');
@@ -164,33 +166,70 @@ function navigateToAnime(id, genre) {
 }
 
 // ---------- Render Trending Row ----------
-function renderTrending() {
+async function renderTrending() {
   const row = document.getElementById('trending-row');
   if (!row) return;
-  row.innerHTML = animeData.map(anime => `
-    <div class="anime-card reveal">
-      <div class="anime-card-poster">
-        ${anime.img
-          ? `<img src="${anime.img}" alt="${anime.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" />`
-          : `<div class="poster-placeholder" style="background: linear-gradient(135deg, ${anime.color}22, ${anime.color}08)"><span style="font-size:3.5rem">${anime.emoji}</span></div>`
-        }
-        <div class="anime-card-overlay">
-          <button class="card-watch-btn" onclick="openTrailer('${anime.trailer}', '${anime.id}', '${anime.genre}', '${anime.title}')">▶ Watch Trailer</button>
+
+  try {
+    const response = await fetch(`${API_BASE}/api/trending?limit=10`);
+    const data = await response.json();
+    const trendingAnimes = data.trending || [];
+
+    row.innerHTML = trendingAnimes.map(anime => {
+      const emoji = getGenreEmoji(anime.category);
+      const color = getGenreColor(anime.category);
+      return `
+        <div class="anime-card reveal">
+          <div class="anime-card-poster">
+            ${anime.photo_url
+              ? `<img src="${anime.photo_url}" alt="${anime.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" />`
+              : `<div class="poster-placeholder" style="background: linear-gradient(135deg, ${color}22, ${color}08)"><span style="font-size:3.5rem">${emoji}</span></div>`
+            }
+            <div class="anime-card-overlay">
+              <button class="card-watch-btn" onclick="openTrailer('${anime.video_url}', '${anime.id}', '${anime.category}', '${anime.title}')">▶ Watch Trailer</button>
+            </div>
+          </div>
+          <div class="anime-card-info">
+            <div class="anime-card-title">${anime.title}</div>
+            <div class="anime-card-meta">
+              <span class="anime-genre-tag ${anime.category}">${anime.category}</span>
+              <span class="anime-card-views">${anime.views || 0} views</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch (err) {
+    console.log('Failed to load trending:', err);
+    // Fallback to hardcoded data
+    row.innerHTML = animeData.map(anime => `
+      <div class="anime-card reveal">
+        <div class="anime-card-poster">
+          ${anime.img
+            ? `<img src="${anime.img}" alt="${anime.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" />`
+            : `<div class="poster-placeholder" style="background: linear-gradient(135deg, ${anime.color}22, ${anime.color}08)"><span style="font-size:3.5rem">${anime.emoji}</span></div>`
+          }
+          <div class="anime-card-overlay">
+            <button class="card-watch-btn" onclick="openTrailer('${anime.trailer}', '${anime.id}', '${anime.genre}', '${anime.title}')">▶ Watch Trailer</button>
+          </div>
+        </div>
+        <div class="anime-card-info">
+          <div class="anime-card-title">${anime.title}</div>
+          <div class="anime-card-meta">
+            <span class="anime-genre-tag ${anime.genre}">${anime.genre}</span>
+            <span class="anime-card-rating">⭐ ${anime.rating}</span>
+          </div>
         </div>
       </div>
-      <div class="anime-card-info">
-        <div class="anime-card-title">${anime.title}</div>
-        <div class="anime-card-meta">
-          <span class="anime-genre-tag ${anime.genre}">${anime.genre}</span>
-          <span class="anime-card-rating">⭐ ${anime.rating}</span>
-        </div>
-      </div>
-    </div>
-  `).join('');
+    `).join('');
+  }
+
   setTimeout(initReveal, 100);
 }
 
-renderTrending();
+(async () => {
+  await renderTrending();
+})();
 
 // ---------- Trailer Modal ----------
 window.openTrailer = function(url, animeId, category, title) {
@@ -200,6 +239,11 @@ window.openTrailer = function(url, animeId, category, title) {
   iframe.src = url + '?autoplay=1';
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
+
+  // Increment view count
+  if (animeId && category) {
+    incrementView(animeId, category);
+  }
 
   // Track last watched if user is signed in
   if (animeId && category && title) {
@@ -227,7 +271,7 @@ window.addToFavourites = async function(id, title, category) {
   if (token) {
     // User is signed in — save to backend
     try {
-      const res = await fetch('/api/favourites', {
+      const res = await fetch(`${API_BASE}/api/favourites`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -275,7 +319,7 @@ window.markAsWatched = async function(animeId, category, title) {
   if (!token) return; // Only track for signed-in users
 
   try {
-    await fetch('/api/last_watched', {
+    await fetch(`${API_BASE}/api/last_watched`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -288,6 +332,43 @@ window.markAsWatched = async function(animeId, category, title) {
     console.log('Failed to track last watched:', err);
   }
 };
+
+// ---------- View Tracking ----------
+window.incrementView = async function(animeId, category) {
+  try {
+    await fetch(`${API_BASE}/api/anime/${category}/${animeId}/view`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  } catch (err) {
+    console.log('Failed to increment view:', err);
+  }
+};
+
+// ---------- Helper Functions ----------
+function getGenreEmoji(genre) {
+  const emojis = {
+    shonen: '⚡',
+    shojo: '🌸',
+    seinen: '🌿',
+    josei: '🌺',
+    kodomomuke: '⭐'
+  };
+  return emojis[genre] || '🎬';
+}
+
+function getGenreColor(genre) {
+  const colors = {
+    shonen: '#e94560',
+    shojo: '#ff9aa2',
+    seinen: '#4ade80',
+    josei: '#d4a373',
+    kodomomuke: '#ffd60a'
+  };
+  return colors[genre] || '#a855f7';
+}
 
 // ---------- Toast ----------
 window.showToast = function(msg) {

@@ -159,14 +159,16 @@
     <!-- Results loaded dynamically -->
   </div>
 </main>
-
+<script src="config.js"></script>
 <script>
+  const API_BASE = window.API_BASE_URL || '';
+
   document.getElementById('search-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const query = document.getElementById('query-input').value;
     const tag = document.getElementById('genre-select').value;
     
-    let url = '/api/search?';
+    let url = `${API_BASE}/api/search?`;
     if (query) url += `query=${encodeURIComponent(query)}&`;
     if (tag) url += `tag=${encodeURIComponent(tag)}`;
 

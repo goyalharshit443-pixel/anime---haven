@@ -1,2 +1,2 @@
-window.API_BASE_URL = ''; // Set this to your deployed backend URL, e.g. 'https://anime-haven-backend.onrender.com'
-window.GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID'; // Replace with your Google OAuth Client ID
+window.API_BASE_URL = 'https://anime-haven-backend.onrender.com';
+window.GOOGLE_CLIENT_ID = '801604685506-3qle7luqemvsl42s31h83hkk8dio9n61.apps.googleusercontent.com';

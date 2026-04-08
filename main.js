@@ -101,29 +101,20 @@ if (themeToggle) {
 (function updateAuthUI() {
   const token = localStorage.getItem('authToken');
   const email = localStorage.getItem('userEmail');
+  const role = localStorage.getItem('userRole');
   const signinBtn = document.querySelector('.btn-signin');
 
   if (token && email && signinBtn) {
-    // User is signed in — show email + sign out
+    // User is signed in — change button to Profile
     signinBtn.innerHTML = `
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      ${email.split('@')[0]}
+      Profile
     `;
-    signinBtn.href = '#';
-    signinBtn.title = 'Click to sign out';
-    signinBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      // Sign out
-      fetch('/api/auth/signout', {
-        method: 'POST',
-        headers: { 'Authorization': 'Bearer ' + token }
-      }).catch(() => {});
-      localStorage.removeItem('authToken');
-      localStorage.removeItem('userEmail');
-      localStorage.removeItem('userId');
-      showToast('👋 Signed out!');
-      setTimeout(() => location.reload(), 800);
-    });
+    signinBtn.href = role === 'contributor' ? 'contributor.html' : 'profile.html';
+    signinBtn.title = 'View Profile';
+    
+    // Remote the old event listener that logs out, because we want it to act as a link.
+    // If it had one we'd remove it, but overriding href works for standard a-tag.
   }
 })();
 
@@ -184,7 +175,7 @@ function renderTrending() {
           : `<div class="poster-placeholder" style="background: linear-gradient(135deg, ${anime.color}22, ${anime.color}08)"><span style="font-size:3.5rem">${anime.emoji}</span></div>`
         }
         <div class="anime-card-overlay">
-          <button class="card-watch-btn" onclick="openTrailer('${anime.trailer}')">▶ Watch Trailer</button>
+          <button class="card-watch-btn" onclick="openTrailer('${anime.trailer}', '${anime.id}', '${anime.genre}', '${anime.title}')">▶ Watch Trailer</button>
         </div>
       </div>
       <div class="anime-card-info">
@@ -202,13 +193,18 @@ function renderTrending() {
 renderTrending();
 
 // ---------- Trailer Modal ----------
-window.openTrailer = function(url) {
+window.openTrailer = function(url, animeId, category, title) {
   const modal = document.getElementById('trailer-modal');
   const iframe = document.getElementById('trailer-iframe');
   if (!modal || !iframe) return;
   iframe.src = url + '?autoplay=1';
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
+
+  // Track last watched if user is signed in
+  if (animeId && category && title) {
+    markAsWatched(animeId, category, title);
+  }
 };
 
 window.closeTrailer = function() {
@@ -225,7 +221,7 @@ document.getElementById('trailer-modal')?.addEventListener('click', (e) => {
 });
 
 // ---------- Favourites (Backend + localStorage fallback) ----------
-window.addToFavourites = async function(id, title) {
+window.addToFavourites = async function(id, title, category) {
   const token = localStorage.getItem('authToken');
 
   if (token) {
@@ -237,7 +233,7 @@ window.addToFavourites = async function(id, title) {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
         },
-        body: JSON.stringify({ animeId: id, title })
+        body: JSON.stringify({ anime_id: id, category: category || 'unknown', title })
       });
 
       const data = await res.json();
@@ -247,30 +243,51 @@ window.addToFavourites = async function(id, title) {
         // Token expired — fall back to localStorage
         localStorage.removeItem('authToken');
         showToast('Session expired. Saving locally.');
-        saveFavLocal(id, title);
+        saveFavLocal(id, title, category);
       } else {
         showToast(data.message || 'Already in favourites!');
       }
     } catch {
       // Server unreachable — fall back
-      saveFavLocal(id, title);
+      saveFavLocal(id, title, category);
     }
   } else {
     // Not signed in — save to localStorage
-    saveFavLocal(id, title);
+    saveFavLocal(id, title, category);
   }
 };
 
-function saveFavLocal(id, title) {
+function saveFavLocal(id, title, category) {
   let favs = JSON.parse(localStorage.getItem('favourites') || '[]');
-  if (!favs.includes(id)) {
-    favs.push(id);
+  const favKey = `${category}-${id}`;
+  if (!favs.includes(favKey)) {
+    favs.push(favKey);
     localStorage.setItem('favourites', JSON.stringify(favs));
     showToast(`✅ ${title} added to favourites!`);
   } else {
     showToast('Already in favourites!');
   }
 }
+
+// ---------- Last Watched Tracking ----------
+window.markAsWatched = async function(animeId, category, title) {
+  const token = localStorage.getItem('authToken');
+  if (!token) return; // Only track for signed-in users
+
+  try {
+    await fetch('/api/last_watched', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({ anime_id: animeId, category, title })
+    });
+    // No need to show toast for this - it's just tracking
+  } catch (err) {
+    console.log('Failed to track last watched:', err);
+  }
+};
 
 // ---------- Toast ----------
 window.showToast = function(msg) {
@@ -281,27 +298,48 @@ window.showToast = function(msg) {
   setTimeout(() => toast.classList.remove('show'), 3000);
 };
 
-// ---------- Intersection Observer Reveal ----------
-function initReveal() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 80);
-        observer.unobserve(e.target);
+// ---------- Load Database Anime ----------
+async function loadDatabaseAnime(category) {
+  try {
+    const res = await fetch(`/api/animes/${category}`);
+    const data = await res.json();
+    if (data.animes && data.animes.length > 0) {
+      const grid = document.getElementById(`${category}-recs`);
+      if (grid) {
+        const dbAnimeHTML = data.animes.map(a => `
+          <div class="anime-card reveal">
+            <div class="anime-card-poster">
+              ${a.photo_url 
+                ? `<img src="${a.photo_url}" alt="${a.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" />`
+                : `<div class="poster-placeholder" style="background: linear-gradient(135deg, #e9456022, #a855f708)"><span style="font-size:3rem">🎬</span></div>`
+              }
+              <div class="anime-card-overlay">
+                <button class="card-watch-btn" onclick="openTrailer('${a.video_url}', '${a.id}', '${category}', '${a.title}')">▶ Watch Video</button>
+              </div>
+            </div>
+            <div class="anime-card-info">
+              <div class="anime-card-title">${a.title}</div>
+              <div class="anime-card-meta">
+                <span class="anime-genre-tag ${category}">${category}</span>
+                <span class="anime-card-rating">${a.tags ? a.tags.split(',')[0] : 'Anime'}</span>
+              </div>
+            </div>
+          </div>
+        `).join('');
+        grid.innerHTML += dbAnimeHTML;
+        setTimeout(initReveal, 100);
       }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
+  } catch (err) {
+    console.log('Failed to load database anime:', err);
+  }
 }
 
-initReveal();
-
-// Observe genre cards
-document.querySelectorAll('.genre-card, .anime-card, .spotlight-inner').forEach((el, i) => {
-  el.classList.add('reveal');
-});
-initReveal();
+// Load database anime for current page
+const currentPage = window.location.pathname.split('/').pop().replace('.html', '');
+if (['shonen', 'shojo', 'seinen', 'josei', 'kodomomuke'].includes(currentPage)) {
+  loadDatabaseAnime(currentPage);
+}
 
 // ---------- Hero Slideshow ----------
 (function initHeroSlideshow() {

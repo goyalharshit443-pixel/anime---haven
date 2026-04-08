@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Search — Anime Haven</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .search-bg {
+      position: fixed; inset: 0; z-index: -1;
+      background: radial-gradient(circle at center top, rgba(168,85,247,0.1), #0f0f1a 60%);
+    }
+    .search-container {
+      max-width: 1200px;
+      margin: 100px auto 40px;
+      padding: 2rem;
+    }
+    .search-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .search-title {
+      font-size: 3.5rem;
+      font-family: 'Bebas Neue', cursive;
+      background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
+      -webkit-background-clip: text; color: transparent;
+      margin-bottom: 1rem;
+    }
+    .search-box {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 2rem;
+      border-radius: 20px;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      backdrop-filter: blur(10px);
+    }
+    .search-input {
+      flex: 1;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      padding: 1rem 1.5rem;
+      border-radius: 50px;
+      color: white;
+      font-size: 1.1rem;
+      outline: none;
+    }
+    .search-input:focus { background: rgba(255,255,255,0.15); box-shadow: 0 0 0 2px var(--primary-accent); }
+    .search-select {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      padding: 1rem;
+      border-radius: 50px;
+      color: white;
+      font-size: 1.1rem;
+      outline: none;
+    }
+    .search-select option { background: #1a1a2e; }
+    .search-btn {
+      background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      color: white;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .search-btn:hover { transform: scale(1.05); }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    .anime-card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: transform 0.3s;
+    }
+    .anime-card:hover { border-color: var(--primary-accent); transform: translateY(-5px); }
+    .anime-img {
+      width: 100%; height: 200px;
+      object-fit: cover;
+    }
+    .anime-info {
+      padding: 1rem;
+    }
+    .anime-cat {
+      font-size: 0.8rem;
+      color: var(--primary-accent);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .anime-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: white;
+      margin: 0.5rem 0;
+    }
+    .anime-tags {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+    }
+  </style>
+</head>
+<body>
+<div class="search-bg"></div>
+
+<header id="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-text">Anime<span class="logo-accent">Haven</span></span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html" class="nav-link">Home</a>
+    </nav>
+  </div>
+</header>
+
+<main class="search-container">
+  <div class="search-header">
+    <h1 class="search-title">Advanced Search</h1>
+    <p style="color: rgba(255,255,255,0.6);">Find exactly what you're looking for across all categories.</p>
+  </div>
+  
+  <form class="search-box" id="search-form">
+    <input type="text" id="query-input" class="search-input" placeholder="Search by anime name..." />
+    <select id="genre-select" class="search-select">
+      <option value="">Any Genre/Tag</option>
+      <option value="Action">Action</option>
+      <option value="Adventure">Adventure</option>
+      <option value="Comedy">Comedy</option>
+      <option value="Drama">Drama</option>
+      <option value="Fantasy">Fantasy</option>
+      <option value="Horror">Horror</option>
+      <option value="Mystery">Mystery</option>
+      <option value="Romance">Romance</option>
+      <option value="Sci-Fi">Sci-Fi</option>
+      <option value="Slice of Life">Slice of Life</option>
+      <option value="Sports">Sports</option>
+      <option value="Supernatural">Supernatural</option>
+      <option value="Thriller">Thriller</option>
+    </select>
+    <button type="submit" class="search-btn">Search</button>
+  </form>
+
+  <div class="results-grid" id="results-grid">
+    <!-- Results loaded dynamically -->
+  </div>
+</main>
+
+<script>
+  document.getElementById('search-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const query = document.getElementById('query-input').value;
+    const tag = document.getElementById('genre-select').value;
+    
+    let url = '/api/search?';
+    if (query) url += `query=${encodeURIComponent(query)}&`;
+    if (tag) url += `tag=${encodeURIComponent(tag)}`;
+
+    const grid = document.getElementById('results-grid');
+    grid.innerHTML = '<p style="color:white;">Searching...</p>';
+
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (data.results && data.results.length > 0) {
+        grid.innerHTML = data.results.map(a => `
+          <div class="anime-card">
+            ${a.photo_url ? `<img src="${a.photo_url}" class="anime-img" />` : `<div class="anime-img" style="background:#1a1a2e; display:flex; align-items:center; justify-content:center; color:white;">No Image</div>`}
+            <div class="anime-info">
+              <div class="anime-cat">${a.category}</div>
+              <div class="anime-name">${a.title}</div>
+              <div class="anime-tags">${a.tags || ''}</div>
+              ${a.video_url ? `<a href="${a.video_url}" target="_blank" style="color:var(--secondary-accent); font-size:0.9rem; text-decoration:none; margin-top:10px; display:inline-block;">Watch Video -></a>` : ''}
+            </div>
+          </div>
+        `).join('');
+      } else {
+        grid.innerHTML = '<p style="color:white;">No results found.</p>';
+      }
+    } catch (e) {
+      grid.innerHTML = '<p style="color:red;">Error fetching results.</p>';
+    }
+  });
+</script>
+</body>
+</html>

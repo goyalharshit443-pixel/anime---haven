@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Profile — Anime Haven</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .profile-bg {
+      position: fixed; inset: 0; z-index: -1;
+      background: radial-gradient(circle at top left, rgba(233,69,96,0.1), transparent 40%),
+                  radial-gradient(circle at bottom right, rgba(168,85,247,0.1), transparent 40%),
+                  #0f0f1a;
+    }
+    .profile-container {
+      max-width: 1200px;
+      margin: 100px auto 40px;
+      padding: 2rem;
+    }
+    .profile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3rem;
+      border-bottom: 2px solid rgba(255,255,255,0.1);
+      padding-bottom: 1rem;
+    }
+    .profile-title {
+      font-size: 3rem;
+      font-family: 'Bebas Neue', cursive;
+      color: var(--accent-light);
+    }
+    .section-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 2rem;
+      color: #fff;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .anime-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+    .anime-card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 1rem;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+    .anime-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.1); }
+    .anime-title {
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+    .anime-category {
+      font-size: 0.8rem;
+      color: var(--primary-accent);
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+    .unfav-btn {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: rgba(233,69,96,0.8);
+      color: white; border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .unfav-btn:hover { background: #e94560; }
+    
+    .empty-state {
+      color: rgba(255,255,255,0.5);
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+<div class="profile-bg"></div>
+
+<header id="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-text">Anime<span class="logo-accent">Haven</span></span>
+    </a>
+    <nav class="main-nav">
+      <a href="index.html" class="nav-link">Home</a>
+    </nav>
+    <div class="header-actions">
+      <button class="btn btn-outline" id="signout-btn">Sign Out</button>
+    </div>
+  </div>
+</header>
+
+<main class="profile-container">
+  <div class="profile-header">
+    <h1 class="profile-title">My Profile (<span id="user-display-email"></span>)</h1>
+    <div id="contributor-request-section" style="display: none;">
+      <button id="request-contributor-btn" class="btn btn-outline" style="margin-left: 1rem;">Request Contributor Access</button>
+    </div>
+  </div>
+
+  <h2 class="section-title">⏱️ Last Watched</h2>
+  <div class="anime-grid" id="last-watched-grid">
+    <div class="empty-state">Loading...</div>
+  </div>
+
+  <h2 class="section-title">⭐ Favourites</h2>
+  <div class="anime-grid" id="favourites-grid">
+    <div class="empty-state">Loading...</div>
+  </div>
+
+</main>
+
+<script>
+  const token = localStorage.getItem('authToken');
+  if (!token) {
+    window.location.href = 'signin.html';
+  }
+  document.getElementById('user-display-email').textContent = localStorage.getItem('userEmail');
+
+  // Show contributor request for normal users
+  const userRole = localStorage.getItem('userRole');
+  if (userRole === 'normal') {
+    document.getElementById('contributor-request-section').style.display = 'block';
+  }
+
+  document.getElementById('signout-btn').addEventListener('click', () => {
+    localStorage.clear();
+    window.location.href = 'index.html';
+  });
+
+  // Contributor request functionality
+  document.getElementById('request-contributor-btn')?.addEventListener('click', async () => {
+    const btn = document.getElementById('request-contributor-btn');
+    btn.disabled = true;
+    btn.textContent = 'Requesting...';
+
+    try {
+      const res = await fetch('/api/contributor-request', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const data = await res.json();
+      
+      if (res.ok) {
+        showToast('✅ Contributor request submitted! An admin will review your request.');
+        btn.style.display = 'none';
+      } else {
+        showToast(data.error || 'Failed to submit request');
+        btn.disabled = false;
+        btn.textContent = 'Request Contributor Access';
+      }
+    } catch (err) {
+      showToast('Network error. Please try again.');
+      btn.disabled = false;
+      btn.textContent = 'Request Contributor Access';
+    }
+  });
+
+  async function loadData() {
+    try {
+      const [favRes, histRes] = await Promise.all([
+        fetch('/api/favourites', { headers: { 'Authorization': `Bearer ${token}` } }),
+        fetch('/api/last_watched', { headers: { 'Authorization': `Bearer ${token}` } })
+      ]);
+      const favData = await favRes.json();
+      const histData = await histRes.json();
+
+      const favGrid = document.getElementById('favourites-grid');
+      const histGrid = document.getElementById('last-watched-grid');
+
+      if (favData.favourites && favData.favourites.length > 0) {
+        favGrid.innerHTML = favData.favourites.map(f => `
+          <div class="anime-card">
+            <button class="unfav-btn" onclick="removeFav('${f.category}', '${f.anime_id}')">Remove</button>
+            <div class="anime-title">${f.title || 'Unknown Title'}</div>
+            <div class="anime-category">${f.category}</div>
+          </div>
+        `).join('');
+      } else {
+        favGrid.innerHTML = `<div class="empty-state">No favourites yet.</div>`;
+      }
+
+      if (histData.last_watched && histData.last_watched.length > 0) {
+        histGrid.innerHTML = histData.last_watched.map(h => `
+          <div class="anime-card">
+            <div class="anime-title">${h.title || 'Unknown Title'}</div>
+            <div class="anime-category">${h.category}</div>
+            <div style="font-size: 0.75rem; color: rgba(255,255,255,0.5); margin-top: 5px;">Watched: ${new Date(h.timestamp).toLocaleDateString()}</div>
+          </div>
+        `).join('');
+      } else {
+        histGrid.innerHTML = `<div class="empty-state">No history found.</div>`;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function removeFav(category, anime_id) {
+    try {
+      await fetch(`/api/favourites/${category}/${anime_id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      loadData();
+    } catch (e) {
+      alert('Error removing favourite');
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', loadData);
+</script>
+
+<div class="toast" id="toast"></div>
+</body>
+</html>

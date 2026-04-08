@@ -131,7 +131,7 @@
               <text x="100" y="268" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="7" font-family="Outfit,sans-serif" letter-spacing="1">CURSED ENERGY AWAITS</text>
             </svg>
           </div>
-          <div class="spotlight-trailer-btn" onclick="openTrailer('https://www.youtube.com/embed/pkKu9hLT-t8')">
+          <div class="spotlight-trailer-btn" onclick="openTrailer('https://www.youtube.com/embed/pkKu9hLT-t8', 'jjk', 'shonen', 'Jujutsu Kaisen')">
             <div class="play-btn-lg"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div>
             <span>Watch Official Trailer</span>
           </div>
@@ -150,8 +150,8 @@
             <a href="https://netflix.com" target="_blank" rel="noopener" class="streamer-badge netflix">Netflix</a>
           </div>
           <div class="spotlight-actions">
-            <button class="btn-primary" onclick="addToFavourites('jjk','Jujutsu Kaisen')">+ Add to Favourites</button>
-            <button class="btn-outline" onclick="openTrailer('https://www.youtube.com/embed/pkKu9hLT-t8')">▶ Watch Trailer</button>
+            <button class="btn-primary" onclick="addToFavourites('jjk','Jujutsu Kaisen', 'shonen')">+ Add to Favourites</button>
+            <button class="btn-outline" onclick="openTrailer('https://www.youtube.com/embed/pkKu9hLT-t8', 'jjk', 'shonen', 'Jujutsu Kaisen')">▶ Watch Trailer</button>
           </div>
         </div>
       </div>
@@ -237,7 +237,7 @@
             <span style="font-size:3rem">${a.emoji}</span>
           </div>
           <div class="anime-card-overlay">
-            <button class="card-watch-btn" onclick="openTrailer('${a.trailer}')">▶ Watch Trailer</button>
+            <button class="card-watch-btn" onclick="openTrailer('${a.trailer}', '${a.title.toLowerCase().replace(/[^a-z0-9]/g, '')}', 'shonen', '${a.title}')">▶ Watch Trailer</button>
           </div>
         </div>
         <div class="anime-card-info">

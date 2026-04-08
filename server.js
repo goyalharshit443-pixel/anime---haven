@@ -8,9 +8,15 @@ const fs = require('fs');
 const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
 const cors = require('cors');
+const { OAuth2Client } = require('google-auth-library');
+const { getDB, initDB } = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Google Auth Client
+const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID'; // Replace this later
+const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 // ---- Middleware ----
 app.use(cors());
@@ -20,30 +26,8 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files (HTML, CSS, JS, images)
 app.use(express.static(path.join(__dirname)));
 
-// ---- Data Helpers ----
-const DATA_DIR = path.join(__dirname, 'data');
-
-function ensureDataDir() {
-  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-}
-
-function readJSON(filename) {
-  const filePath = path.join(DATA_DIR, filename);
-  if (!fs.existsSync(filePath)) return [];
-  try {
-    return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-  } catch {
-    return [];
-  }
-}
-
-function writeJSON(filename, data) {
-  ensureDataDir();
-  fs.writeFileSync(path.join(DATA_DIR, filename), JSON.stringify(data, null, 2), 'utf-8');
-}
-
 // ---- In-memory session store ----
-// Maps token -> { userId, email, createdAt }
+// Maps token -> { userId, email, role, createdAt }
 const sessions = new Map();
 
 function authenticate(req, res, next) {
@@ -56,172 +40,280 @@ function authenticate(req, res, next) {
   next();
 }
 
+function authenticateContributor(req, res, next) {
+  authenticate(req, res, () => {
+    if (req.user.role !== 'contributor') {
+      return res.status(403).json({ error: 'Access denied. Contributors only.' });
+    }
+    next();
+  });
+}
+
 // ============================================================
 // AUTH ROUTES
 // ============================================================
 
-// POST /api/auth/signup
 app.post('/api/auth/signup', async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password are required.' });
+    if (!email || !password || password.length < 6) {
+      return res.status(400).json({ error: 'Valid email and password (min 6 chars) are required.' });
     }
-    if (password.length < 6) {
-      return res.status(400).json({ error: 'Password must be at least 6 characters.' });
-    }
-
-    const users = readJSON('users.json');
-
-    // Check if user already exists
-    if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
+    
+    const db = await getDB();
+    const existing = await db.get('SELECT * FROM users WHERE email = ?', email.toLowerCase().trim());
+    if (existing) {
       return res.status(409).json({ error: 'An account with this email already exists.' });
     }
 
-    // Hash password and save
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = {
-      id: uuidv4(),
-      email: email.toLowerCase().trim(),
-      password: hashedPassword,
-      favourites: [],
-      createdAt: new Date().toISOString()
-    };
+    const userId = uuidv4();
+    await db.run('INSERT INTO users (id, email, password) VALUES (?, ?, ?)', [userId, email.toLowerCase().trim(), hashedPassword]);
 
-    users.push(newUser);
-    writeJSON('users.json', users);
-
-    // Create session
     const token = uuidv4();
-    sessions.set(token, { userId: newUser.id, email: newUser.email, createdAt: Date.now() });
+    sessions.set(token, { userId, email: email.toLowerCase().trim(), role: 'normal', createdAt: Date.now() });
 
-    res.status(201).json({
-      message: 'Account created successfully!',
-      token,
-      user: { id: newUser.id, email: newUser.email }
-    });
+    res.status(201).json({ message: 'Account created!', token, user: { id: userId, email, role: 'normal' } });
   } catch (err) {
     console.error('Signup error:', err);
-    res.status(500).json({ error: 'Server error. Please try again.' });
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
-// POST /api/auth/signin
 app.post('/api/auth/signin', async (req, res) => {
   try {
     const { email, password } = req.body;
+    const db = await getDB();
+    const user = await db.get('SELECT * FROM users WHERE email = ?', email?.toLowerCase().trim());
 
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password are required.' });
-    }
-
-    const users = readJSON('users.json');
-    const user = users.find(u => u.email === email.toLowerCase().trim());
-
-    if (!user) {
+    if (!user || !(await bcrypt.compare(password, user.password || ''))) {
       return res.status(401).json({ error: 'Invalid email or password.' });
     }
 
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
-      return res.status(401).json({ error: 'Invalid email or password.' });
-    }
-
-    // Create session
     const token = uuidv4();
-    sessions.set(token, { userId: user.id, email: user.email, createdAt: Date.now() });
+    sessions.set(token, { userId: user.id, email: user.email, role: user.role, createdAt: Date.now() });
 
-    res.json({
-      message: 'Welcome back!',
-      token,
-      user: { id: user.id, email: user.email }
-    });
+    res.json({ message: 'Welcome back!', token, user: { id: user.id, email: user.email, role: user.role } });
   } catch (err) {
     console.error('Signin error:', err);
-    res.status(500).json({ error: 'Server error. Please try again.' });
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
-// POST /api/auth/signout
+app.post('/api/auth/google', async (req, res) => {
+  try {
+    const { credential } = req.body;
+    let payload;
+    try {
+      const ticket = await googleClient.verifyIdToken({ idToken: credential, audience: GOOGLE_CLIENT_ID });
+      payload = ticket.getPayload();
+    } catch {
+      // NOTE: In development without a real client ID, we mock or fail. For production it must be valid.
+      console.warn("Google verify failed, check CLIENT_ID");
+      return res.status(401).json({ error: 'Invalid Google credential.' });
+    }
+
+    const { email, sub: google_id } = payload;
+    const db = await getDB();
+    let user = await db.get('SELECT * FROM users WHERE email = ?', email);
+
+    if (!user) {
+      const userId = uuidv4();
+      await db.run('INSERT INTO users (id, email, google_id) VALUES (?, ?, ?)', [userId, email, google_id]);
+      user = { id: userId, email, role: 'normal' };
+    } else if (!user.google_id) {
+      await db.run('UPDATE users SET google_id = ? WHERE email = ?', [google_id, email]);
+    }
+
+    const token = uuidv4();
+    sessions.set(token, { userId: user.id, email: user.email, role: user.role, createdAt: Date.now() });
+
+    res.json({ message: 'Signed in with Google!', token, user: { id: user.id, email: user.email, role: user.role } });
+  } catch (err) {
+    console.error('Google Auth Error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 app.post('/api/auth/signout', authenticate, (req, res) => {
   sessions.delete(req.token);
   res.json({ message: 'Signed out successfully.' });
 });
 
-// GET /api/auth/me — Check current session
-app.get('/api/auth/me', authenticate, (req, res) => {
-  res.json({ user: { userId: req.user.userId, email: req.user.email } });
+app.get('/api/auth/me', authenticate, async (req, res) => {
+  res.json({ user: req.user });
 });
 
 // ============================================================
-// FAVOURITES ROUTES
+// CONTRIBUTOR ROUTES
 // ============================================================
+const allowedTables = ['shonen', 'shojo', 'seinen', 'josei', 'kodomomuke'];
 
-// GET /api/favourites
-app.get('/api/favourites', authenticate, (req, res) => {
-  const users = readJSON('users.json');
-  const user = users.find(u => u.id === req.user.userId);
-  if (!user) return res.status(404).json({ error: 'User not found.' });
-  res.json({ favourites: user.favourites || [] });
-});
+app.post('/api/animes/:category', authenticateContributor, async (req, res) => {
+  try {
+    const { category } = req.params;
+    if (!allowedTables.includes(category)) return res.status(400).json({ error: 'Invalid anime category.' });
 
-// POST /api/favourites — Add a favourite
-app.post('/api/favourites', authenticate, (req, res) => {
-  const { animeId, title } = req.body;
-  if (!animeId) return res.status(400).json({ error: 'animeId is required.' });
+    const { title, author, video_url, photo_url, tags } = req.body;
+    if (!title) return res.status(400).json({ error: 'Title is required.' });
 
-  const users = readJSON('users.json');
-  const userIndex = users.findIndex(u => u.id === req.user.userId);
-  if (userIndex === -1) return res.status(404).json({ error: 'User not found.' });
+    const id = uuidv4();
+    const db = await getDB();
+    await db.run(`INSERT INTO ${category} (id, title, author, video_url, photo_url, tags) VALUES (?, ?, ?, ?, ?, ?)`, 
+      [id, title, author, video_url, photo_url, tags]);
 
-  if (!users[userIndex].favourites) users[userIndex].favourites = [];
-
-  // Check if already added
-  if (users[userIndex].favourites.find(f => f.animeId === animeId)) {
-    return res.json({ message: 'Already in favourites!', favourites: users[userIndex].favourites });
+    res.status(201).json({ message: 'Anime added successfully!', id });
+  } catch (err) {
+    console.error('Add anime error:', err);
+    res.status(500).json({ error: 'Server error' });
   }
-
-  users[userIndex].favourites.push({ animeId, title: title || animeId, addedAt: new Date().toISOString() });
-  writeJSON('users.json', users);
-
-  res.json({ message: `${title || animeId} added to favourites!`, favourites: users[userIndex].favourites });
 });
 
-// DELETE /api/favourites/:animeId — Remove a favourite
-app.delete('/api/favourites/:animeId', authenticate, (req, res) => {
-  const { animeId } = req.params;
-  const users = readJSON('users.json');
-  const userIndex = users.findIndex(u => u.id === req.user.userId);
-  if (userIndex === -1) return res.status(404).json({ error: 'User not found.' });
+// ============================================================
+// SEARCH & FETCH ROUTES
+// ============================================================
 
-  users[userIndex].favourites = (users[userIndex].favourites || []).filter(f => f.animeId !== animeId);
-  writeJSON('users.json', users);
+app.get('/api/search', async (req, res) => {
+  try {
+    const { query, tag } = req.query;
+    const db = await getDB();
+    
+    // Build union query across all tables
+    let unionTables = allowedTables.map(t => 
+      `SELECT id, title, author, video_url, photo_url, tags, created_at, '${t}' as category FROM ${t}`
+    ).join(' UNION ALL ');
 
-  res.json({ message: 'Removed from favourites.', favourites: users[userIndex].favourites });
+    let sql = `SELECT * FROM (${unionTables}) WHERE 1=1`;
+    const params = [];
+
+    if (query) {
+      sql += ` AND title LIKE ?`;
+      params.push(`%${query}%`);
+    }
+    if (tag) {
+      sql += ` AND tags LIKE ?`;
+      params.push(`%${tag}%`);
+    }
+
+    const results = await db.all(sql, params);
+    res.json({ results });
+  } catch (err) {
+    console.error("Search Error", err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.get('/api/animes/:category', async (req, res) => {
+  try {
+    const { category } = req.params;
+    if (!allowedTables.includes(category)) return res.status(400).json({ error: 'Invalid anime category.' });
+    
+    const db = await getDB();
+    const results = await db.all(`SELECT * FROM ${category} ORDER BY created_at DESC`);
+    res.json({ animes: results });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// ============================================================
+// FAVOURITES & LAST WATCHED ROUTES
+// ============================================================
+
+app.get('/api/favourites', authenticate, async (req, res) => {
+  try {
+    const db = await getDB();
+    const favs = await db.all('SELECT * FROM favourites WHERE user_id = ? ORDER BY added_at DESC', req.user.userId);
+    res.json({ favourites: favs });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.post('/api/favourites', authenticate, async (req, res) => {
+  try {
+    const { anime_id, category, title } = req.body;
+    if (!anime_id || !category) return res.status(400).json({ error: 'anime_id and category are required.' });
+
+    const db = await getDB();
+    await db.run('INSERT OR IGNORE INTO favourites (user_id, anime_id, category, title) VALUES (?, ?, ?, ?)', 
+      [req.user.userId, anime_id, category, title]);
+      
+    res.json({ message: 'Added to favourites!' });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.delete('/api/favourites/:category/:anime_id', authenticate, async (req, res) => {
+  try {
+    const { anime_id, category } = req.params;
+    const db = await getDB();
+    await db.run('DELETE FROM favourites WHERE user_id = ? AND anime_id = ? AND category = ?', [req.user.userId, anime_id, category]);
+    res.json({ message: 'Removed from favourites.' });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.post('/api/last_watched', authenticate, async (req, res) => {
+  try {
+    const { anime_id, category, title } = req.body;
+    const db = await getDB();
+    // Replace if exists (timestamp updates)
+    await db.run('INSERT OR REPLACE INTO last_watched (user_id, anime_id, category, title, timestamp) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)', 
+      [req.user.userId, anime_id, category, title]);
+    res.json({ message: 'Last watched updated.' });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.get('/api/last_watched', authenticate, async (req, res) => {
+  try {
+    const db = await getDB();
+    const watched = await db.all('SELECT * FROM last_watched WHERE user_id = ? ORDER BY timestamp DESC LIMIT 20', req.user.userId);
+    res.json({ last_watched: watched });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// ============================================================
+// CONTRIBUTOR REQUEST ROUTES
+// ============================================================
+
+app.post('/api/contributor-request', authenticate, async (req, res) => {
+  try {
+    // Check if user already has a pending or approved request
+    const db = await getDB();
+    const existing = await db.get('SELECT * FROM contributor_requests WHERE user_id = ? AND status IN (?, ?)', 
+      [req.user.userId, 'pending', 'approved']);
+    
+    if (existing) {
+      if (existing.status === 'approved') {
+        return res.status(400).json({ error: 'You are already a contributor!' });
+      }
+      return res.status(400).json({ error: 'You already have a pending request.' });
+    }
+
+    const requestId = uuidv4();
+    await db.run('INSERT INTO contributor_requests (id, user_id, email) VALUES (?, ?, ?)', 
+      [requestId, req.user.userId, req.user.email]);
+
+    res.json({ message: 'Contributor request submitted successfully!' });
+  } catch (err) {
+    console.error('Contributor request error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
 });
 
 // ============================================================
 // CONTACT ROUTE
 // ============================================================
 
-// POST /api/contact
-app.post('/api/contact', (req, res) => {
+app.post('/api/contact', async (req, res) => {
   const { name, email, message } = req.body;
-  if (!name || !email || !message) {
-    return res.status(400).json({ error: 'Name, email, and message are required.' });
-  }
-
-  const messages = readJSON('messages.json');
-  messages.push({
-    id: uuidv4(),
-    name,
-    email,
-    message,
-    createdAt: new Date().toISOString()
-  });
-  writeJSON('messages.json', messages);
-
   res.json({ message: 'Thank you! Your message has been received.' });
 });
 
@@ -235,12 +327,15 @@ app.get('*', (req, res) => {
 // ============================================================
 // START SERVER
 // ============================================================
-app.listen(PORT, () => {
-  ensureDataDir();
-  console.log(`
-  ╔══════════════════════════════════════════╗
-  ║   🌸 Anime Haven Server is running!     ║
-  ║   → http://localhost:${PORT}               ║
-  ╚══════════════════════════════════════════╝
-  `);
+initDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`
+    ╔══════════════════════════════════════════╗
+    ║   🌸 Anime Haven Server is running!     ║
+    ║   → http://localhost:${PORT}               ║
+    ╚══════════════════════════════════════════╝
+    `);
+  });
+}).catch(err => {
+  console.error("Failed to initialize database", err);
 });

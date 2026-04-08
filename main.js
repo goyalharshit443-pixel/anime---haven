@@ -299,7 +299,12 @@ window.showToast = function(msg) {
 };
 
 // ---------- Load Database Anime ----------
+// Note: Keeping existing hardcoded anime content. Database anime can be accessed via search.
 async function loadDatabaseAnime(category) {
+  // Disabled to preserve existing hardcoded content
+  // Uncomment below if you want to append database anime to category pages
+  
+  /*
   try {
     const res = await fetch(`/api/animes/${category}`);
     const data = await res.json();
@@ -333,13 +338,17 @@ async function loadDatabaseAnime(category) {
   } catch (err) {
     console.log('Failed to load database anime:', err);
   }
+  */
 }
 
 // Load database anime for current page
+// Disabled to preserve existing hardcoded content
+/*
 const currentPage = window.location.pathname.split('/').pop().replace('.html', '');
 if (['shonen', 'shojo', 'seinen', 'josei', 'kodomomuke'].includes(currentPage)) {
   loadDatabaseAnime(currentPage);
 }
+*/
 
 // ---------- Hero Slideshow ----------
 (function initHeroSlideshow() {

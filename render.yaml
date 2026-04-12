@@ -3,10 +3,12 @@ services:
     name: anime-haven
     runtime: node
     plan: free
-    buildCommand: npm install && npm rebuild sqlite3 --build-from-source
+    buildCommand: npm install --ignore-scripts && npm rebuild sqlite3 --build-from-source --python=/usr/bin/python3 && npm run build
     startCommand: node server.js
     envVars:
       - key: NODE_ENV
         value: production
       - key: NODE_VERSION
         value: "20"
+      - key: npm_config_build_from_source
+        value: "true"

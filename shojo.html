@@ -127,7 +127,7 @@
           </div>
           <div class="spotlight-actions">
             <button class="btn-primary" style="background: linear-gradient(135deg,#ff9aa2,#c7ceea); color:#1a0a1a" onclick="addToFavourites('fruits-basket','Fruits Basket', 'shojo')">+ Add to Favourites</button>
-            <button class="btn-outline" onclick="openTrailer('https://www.youtube.com/embed/Mv-2GGiCr0c')">▶ Watch</button>
+            <button class="btn-outline" onclick="openTrailer('https://www.youtube.com/embed/Mv-2GGiCr0c', 'e5070bba-c00c-4fb0-8749-da5be39f3e3f', 'shojo', 'Fruits Basket')">▶ Watch</button>
           </div>
         </div>
       </div>
@@ -163,12 +163,12 @@
 <script src="main.js"></script>
 <script>
   const shojoAnime = [
-    { title: 'Kimi ni Todoke', emoji: '🌸', rating: '8.1', color: '#ff9aa2', trailer: 'https://www.youtube.com/embed/wkZ5oFxZMiE', img: null },
-    { title: 'Clannad: After Story', emoji: '🍂', rating: '9.0', color: '#f97316', trailer: 'https://www.youtube.com/embed/s3Pnv9HhQY8', img: null },
-    { title: 'Nana', emoji: '🎸', rating: '8.5', color: '#f97316', trailer: 'https://www.youtube.com/embed/kQCmpuJAiGE', img: null },
-    { title: 'Ouran High School', emoji: '🌹', rating: '8.2', color: '#ffd700', trailer: 'https://www.youtube.com/embed/E6TFpORKJzU', img: null },
-    { title: 'Your Lie in April', emoji: '🎵', rating: '8.7', color: '#c7ceea', trailer: 'https://www.youtube.com/embed/uo9N_1bJMwM', img: 'img3.jpg' },
-    { title: 'Skip and Loafer', emoji: '💛', rating: '8.3', color: '#ffd60a', trailer: 'https://www.youtube.com/embed/cWoSuD2Nvw8', img: null },
+    { id: 'f28aee02-d98f-44a6-af8a-6d1f51522e07', title: 'Kimi ni Todoke', emoji: '🌸', rating: '8.1', color: '#ff9aa2', trailer: 'https://www.youtube.com/embed/wkZ5oFxZMiE', img: null },
+    { id: '2f05d9ba-1589-4f17-932d-aec72bbc46a7', title: 'Clannad: After Story', emoji: '🍂', rating: '9.0', color: '#f97316', trailer: 'https://www.youtube.com/embed/s3Pnv9HhQY8', img: null },
+    { id: 'c42e4038-4d56-4ec3-bebc-d9f23440a26a', title: 'Nana', emoji: '🎸', rating: '8.5', color: '#f97316', trailer: 'https://www.youtube.com/embed/kQCmpuJAiGE', img: null },
+    { id: '2fbe678e-846d-47e9-97cc-c259494370e2', title: 'Ouran High School', emoji: '🌹', rating: '8.2', color: '#ffd700', trailer: 'https://www.youtube.com/embed/E6TFpORKJzU', img: null },
+    { id: 'a9cca0af-e8d4-4b03-9eaf-1279489d6c6b', title: 'Your Lie in April', emoji: '🎵', rating: '8.7', color: '#c7ceea', trailer: 'https://www.youtube.com/embed/uo9N_1bJMwM', img: 'img3.jpg' },
+    { id: '90cb6bbc-a934-4055-bd5a-2ef53af0842b', title: 'Skip and Loafer', emoji: '💛', rating: '8.3', color: '#ffd60a', trailer: 'https://www.youtube.com/embed/cWoSuD2Nvw8', img: null },
   ];
   const recsGrid = document.getElementById('shojo-recs');
   if (recsGrid) {
@@ -176,7 +176,7 @@
       <div class="anime-card reveal">
         <div class="anime-card-poster">
           ${a.img ? `<img src="${a.img}" alt="${a.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" />` : `<div class="poster-placeholder" style="background: linear-gradient(135deg, ${a.color}22, ${a.color}08)"><span style="font-size:3rem">${a.emoji}</span></div>`}
-          <div class="anime-card-overlay"><button class="card-watch-btn" onclick="openTrailer('${a.trailer}', '${a.title.toLowerCase().replace(/[^a-z0-9]/g, '')}', 'shojo', '${a.title}')">▶ Watch</button></div>
+          <div class="anime-card-overlay"><button class="card-watch-btn" onclick="openTrailer('${a.trailer}', '${a.id}', 'shojo', '${a.title}')">▶ Watch</button></div>
         </div>
         <div class="anime-card-info">
           <div class="anime-card-title">${a.title}</div>

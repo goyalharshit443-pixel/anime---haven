@@ -135,18 +135,18 @@
 <script src="main.js"></script>
 <script>
   const joseiAnime = [
-    { title: 'Nana', emoji: '🎸', rating: '8.5', color: '#f97316', trailer: 'https://www.youtube.com/embed/kQCmpuJAiGE' },
-    { title: 'Skip and Loafer', emoji: '💛', rating: '8.3', color: '#ffd60a', trailer: 'https://www.youtube.com/embed/cWoSuD2Nvw8' },
-    { title: 'Chihayafuru', emoji: '🃏', rating: '8.4', color: '#22d3ee', trailer: 'https://www.youtube.com/embed/lqTVYWDCGSg' },
-    { title: 'Princess Jellyfish', emoji: '🪼', rating: '7.9', color: '#c7ceea', trailer: 'https://www.youtube.com/embed/NJRIH-2aAZQ' },
-    { title: 'Nodame Cantabile', emoji: '🎹', rating: '8.4', color: '#f0d5c0', trailer: 'https://www.youtube.com/embed/6LwMk2Rpqus' },
-    { title: 'Kuragehime', emoji: '🌊', rating: '7.8', color: '#3b82f6', trailer: 'https://www.youtube.com/embed/NJRIH-2aAZQ' },
+    { id: '8b855dbf-f87e-42c0-b02e-b287997279ee', title: 'Nana', emoji: '🎸', rating: '8.5', color: '#f97316', trailer: 'https://www.youtube.com/embed/kQCmpuJAiGE' },
+    { id: '4af379e5-dfef-43d0-aa23-57ff92480f3f', title: 'Skip and Loafer', emoji: '💛', rating: '8.3', color: '#ffd60a', trailer: 'https://www.youtube.com/embed/cWoSuD2Nvw8' },
+    { id: 'f710ee49-5e1d-4179-9177-479c251e211b', title: 'Chihayafuru', emoji: '🎴', rating: '8.4', color: '#22d3ee', trailer: 'https://www.youtube.com/embed/lqTVYWDCGSg' },
+    { id: '0f0eb12e-1482-4bbe-8074-92925a144d11', title: 'Princess Jellyfish', emoji: '🧼', rating: '7.9', color: '#c7ceea', trailer: 'https://www.youtube.com/embed/NJRIH-2aAZQ' },
+    { id: 'd5a506cc-b445-4daf-8960-a90ec3144de3', title: 'Nodame Cantabile', emoji: '🎹', rating: '8.4', color: '#f0d5c0', trailer: 'https://www.youtube.com/embed/6LwMk2Rpqus' },
+    { id: '139f349a-575a-4c58-a333-902710b4bc12', title: 'Kuragehime', emoji: '🌊', rating: '7.8', color: '#3b82f6', trailer: 'https://www.youtube.com/embed/NJRIH-2aAZQ' },
   ];
   const recsGrid = document.getElementById('josei-recs');
   if (recsGrid) {
     recsGrid.innerHTML = joseiAnime.map(a => `
       <div class="anime-card reveal">
-        <div class="anime-card-poster"><div class="poster-placeholder" style="background: linear-gradient(135deg, ${a.color}22, ${a.color}08)"><span style="font-size:3rem">${a.emoji}</span></div><div class="anime-card-overlay"><button class="card-watch-btn" onclick="openTrailer('${a.trailer}', '${a.title.toLowerCase().replace(/[^a-z0-9]/g, '')}', 'josei', '${a.title}')">▶ Watch</button></div></div>
+        <div class="anime-card-poster"><div class="poster-placeholder" style="background: linear-gradient(135deg, ${a.color}22, ${a.color}08)"><span style="font-size:3rem">${a.emoji}</span></div><div class="anime-card-overlay"><button class="card-watch-btn" onclick="openTrailer('${a.trailer}', '${a.id}', 'josei', '${a.title}')">▶ Watch</button></div></div>
         <div class="anime-card-info"><div class="anime-card-title">${a.title}</div><div class="anime-card-meta"><span class="anime-genre-tag josei">Josei</span><span class="anime-card-rating">⭐ ${a.rating}</span></div></div>
       </div>`).join('');
   }

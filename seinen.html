@@ -145,12 +145,12 @@
 <script src="main.js"></script>
 <script>
   const seineAnime = [
-    { title: 'Vinland Saga', emoji: '⚓', rating: '8.7', color: '#64748b', trailer: 'https://www.youtube.com/embed/PAtHVPO8sUE', img: 'img4.jpg' },
-    { title: 'Solo Leveling', emoji: '⚔️', rating: '8.8', color: '#3b82f6', trailer: 'https://www.youtube.com/embed/Uu4Tv5BqvJ8', img: null },
-    { title: 'Berserk', emoji: '🗡️', rating: '8.6', color: '#8b0000', trailer: 'https://www.youtube.com/embed/ik4dnYKcjVg', img: null },
-    { title: 'Attack on Titan', emoji: '🏔️', rating: '9.1', color: '#b8a090', trailer: 'https://www.youtube.com/embed/MGRm4IzK1SQ', img: null },
-    { title: 'Gantz', emoji: '🖤', rating: '7.4', color: '#111', trailer: 'https://www.youtube.com/embed/lK-hFbRXvA4', img: 'Gantz-Anime-Poster.avif' },
-    { title: 'Dungeon Meshi', emoji: '🍲', rating: '8.8', color: '#f59e0b', trailer: 'https://www.youtube.com/embed/jdRBPNEOBhw', img: null },
+    { id: '069ce95c-8f4b-421f-aacb-f4bfd9f23cf7', title: 'Vinland Saga', emoji: '⛓', rating: '8.7', color: '#64748b', trailer: 'https://www.youtube.com/embed/PAtHVPO8sUE', img: 'img4.jpg' },
+    { id: 'd460fd1a-367a-4955-b529-3502e408adeb', title: 'Solo Leveling', emoji: '⚔', rating: '8.8', color: '#3b82f6', trailer: 'https://www.youtube.com/embed/Uu4Tv5BqvJ8', img: null },
+    { id: '2b35e160-fea7-4cbb-b38f-b4936fe15c53', title: 'Berserk', emoji: '🗡', rating: '8.6', color: '#8b0000', trailer: 'https://www.youtube.com/embed/ik4dnYKcjVg', img: null },
+    { id: '380bd2ba-12ac-4e86-8420-268c7b0e1be6', title: 'Attack on Titan', emoji: '🏔', rating: '9.1', color: '#b8a090', trailer: 'https://www.youtube.com/embed/MGRm4IzK1SQ', img: null },
+    { id: 'abdab947-1aa3-4d0e-88f8-94210fd8e9bb', title: 'Gantz', emoji: '🖤', rating: '7.4', color: '#111', trailer: 'https://www.youtube.com/embed/lK-hFbRXvA4', img: 'Gantz-Anime-Poster.avif' },
+    { id: '1f004317-679d-4090-92cd-a88884954b4d', title: 'Dungeon Meshi', emoji: '🍲', rating: '8.8', color: '#f59e0b', trailer: 'https://www.youtube.com/embed/jdRBPNEOBhw', img: null },
   ];
   const recsGrid = document.getElementById('seinen-recs');
   if (recsGrid) {
@@ -161,7 +161,7 @@
             ? `<img src="${a.img}" alt="${a.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" />`
             : `<div class="poster-placeholder" style="background: linear-gradient(135deg, ${a.color}22, ${a.color}08)"><span style="font-size:3rem">${a.emoji}</span></div>`
           }
-          <div class="anime-card-overlay"><button class="card-watch-btn" onclick="openTrailer('${a.trailer}', '${a.title.toLowerCase().replace(/[^a-z0-9]/g, '')}', 'seinen', '${a.title}')">▶ Watch</button></div>
+          <div class="anime-card-overlay"><button class="card-watch-btn" onclick="openTrailer('${a.trailer}', '${a.id}', 'seinen', '${a.title}')">▶ Watch</button></div>
         </div>
         <div class="anime-card-info">
           <div class="anime-card-title">${a.title}</div>

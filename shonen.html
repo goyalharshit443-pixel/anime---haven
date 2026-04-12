@@ -151,8 +151,8 @@
             <a href="https://netflix.com" target="_blank" rel="noopener" class="streamer-badge netflix">Netflix</a>
           </div>
           <div class="spotlight-actions">
-            <button class="btn-primary" onclick="addToFavourites('jjk','Jujutsu Kaisen', 'shonen')">+ Add to Favourites</button>
-            <button class="btn-outline" onclick="openTrailer('https://www.youtube.com/embed/pkKu9hLT-t8', 'jjk', 'shonen', 'Jujutsu Kaisen')">▶ Watch</button>
+            <button class="btn-primary" onclick="addToFavourites('a5242018-8e9e-453e-bc3a-4edc68af24ec','Jujutsu Kaisen', 'shonen')">+ Add to Favourites</button>
+            <button class="btn-outline" onclick="openTrailer('https://www.youtube.com/embed/pkKu9hLT-t8', 'a5242018-8e9e-453e-bc3a-4edc68af24ec', 'shonen', 'Jujutsu Kaisen')">▶ Watch</button>
           </div>
         </div>
       </div>
@@ -222,12 +222,12 @@
 <script src="main.js"></script>
 <script>
   const shonenAnime = [
-    { title: 'Demon Slayer', emoji: '🌊', rating: '8.7', year: '2019', color: '#06b6d4', trailer: 'https://www.youtube.com/embed/VQGCKyvzIM4' },
-    { title: 'One Piece', emoji: '🏴‍☠️', rating: '9.0', year: '1999', color: '#ff9500', trailer: 'https://www.youtube.com/embed/S8_YwFLCh4U' },
-    { title: 'My Hero Academia', emoji: '💪', rating: '8.4', year: '2016', color: '#22d3ee', trailer: 'https://www.youtube.com/embed/EP_oBNEHzmY' },
-    { title: 'Dandadan', emoji: '👻', rating: '8.7', year: '2024', color: '#a855f7', trailer: 'https://www.youtube.com/embed/jfh4V5PFDA8' },
-    { title: 'Bleach: TYBW', emoji: '⚔️', rating: '8.9', year: '2022', color: '#f0f0f0', trailer: 'https://www.youtube.com/embed/qg4B_VfhYDQ' },
-    { title: 'Haikyu!!', emoji: '🏐', rating: '8.7', year: '2014', color: '#f97316', trailer: 'https://www.youtube.com/embed/xmCHMLBKwso' },
+    { id: 'cdd6bec3-80e2-47ed-8928-bc839fe05d3e', title: 'Demon Slayer', emoji: '🌊', rating: '8.7', year: '2019', color: '#06b6d4', trailer: 'https://www.youtube.com/embed/VQGCKyvzIM4' },
+    { id: '04da96db-c36b-4133-b14b-c20e0da5c691', title: 'One Piece', emoji: '🏴‍☠️', rating: '9.0', year: '1999', color: '#ff9500', trailer: 'https://www.youtube.com/embed/S8_YwFLCh4U' },
+    { id: 'c4629955-6c9b-43f6-857d-4af6b1c8dd69', title: 'My Hero Academia', emoji: '💪', rating: '8.4', year: '2016', color: '#22d3ee', trailer: 'https://www.youtube.com/embed/EP_oBNEHzmY' },
+    { id: '1ad30b72-141b-448a-a4a6-f5a3e3fa256a', title: 'Dandadan', emoji: '👻', rating: '8.7', year: '2024', color: '#a855f7', trailer: 'https://www.youtube.com/embed/jfh4V5PFDA8' },
+    { id: '80ddf103-a2bc-479d-b140-f82da18daea3', title: 'Bleach: TYBW', emoji: '⚔️', rating: '8.9', year: '2022', color: '#f0f0f0', trailer: 'https://www.youtube.com/embed/qg4B_VfhYDQ' },
+    { id: '343fc738-0893-4444-b239-41b148967e1f', title: 'Haikyu!!', emoji: '🏐', rating: '8.7', year: '2014', color: '#f97316', trailer: 'https://www.youtube.com/embed/xmCHMLBKwso' },
   ];
 
   const recsGrid = document.getElementById('shonen-recs');
@@ -239,7 +239,7 @@
             <span style="font-size:3rem">${a.emoji}</span>
           </div>
           <div class="anime-card-overlay">
-            <button class="card-watch-btn" onclick="openTrailer('${a.trailer}', '${a.title.toLowerCase().replace(/[^a-z0-9]/g, '')}', 'shonen', '${a.title}')">▶ Watch</button>
+            <button class="card-watch-btn" onclick="openTrailer('${a.trailer}', '${a.id}', 'shonen', '${a.title}')">▶ Watch</button>
           </div>
         </div>
         <div class="anime-card-info">

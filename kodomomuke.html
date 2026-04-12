@@ -138,18 +138,18 @@
 <script src="main.js"></script>
 <script>
   const kodomoAnime = [
-    { title: 'Doraemon', emoji: '🔵', rating: '7.9', color: '#00bbf9', trailer: 'https://www.youtube.com/embed/LZTCi3BQH4U' },
-    { title: 'Cardcaptor Sakura', emoji: '🌟', rating: '8.3', color: '#ff9aa2', trailer: 'https://www.youtube.com/embed/Y5JCvjBB-SA' },
-    { title: 'Precure', emoji: '💖', rating: '7.5', color: '#ff9aa2', trailer: 'https://www.youtube.com/embed/uU7csCWPCiQ' },
-    { title: 'Digimon Adventure', emoji: '🦕', rating: '8.0', color: '#3b82f6', trailer: 'https://www.youtube.com/embed/jS9wKKVSMCM' },
-    { title: 'Beyblade X', emoji: '🌀', rating: '7.2', color: '#ffd60a', trailer: 'https://www.youtube.com/embed/4XYhIH9CXdM' },
-    { title: 'Yo-kai Watch', emoji: '👻', rating: '7.0', color: '#a855f7', trailer: 'https://www.youtube.com/embed/3QFNhbdUFV8' },
+    { id: '190ace63-337f-4441-ad58-0feb42bf94a6', title: 'Doraemon', emoji: '🗕', rating: '7.9', color: '#00bbf9', trailer: 'https://www.youtube.com/embed/LZTCi3BQH4U' },
+    { id: 'ea4093e2-8151-46f5-a512-c1d17fbd098a', title: 'Cardcaptor Sakura', emoji: '🌟', rating: '8.3', color: '#ff9aa2', trailer: 'https://www.youtube.com/embed/Y5JCvjBB-SA' },
+    { id: '82622126-c099-494d-9d14-9dac5cb8a752', title: 'Precure', emoji: '💖', rating: '7.5', color: '#ff9aa2', trailer: 'https://www.youtube.com/embed/uU7csCWPCiQ' },
+    { id: 'eaf77f93-adcc-4264-ae02-a1974bb3eb8f', title: 'Digimon Adventure', emoji: '🦕', rating: '8.0', color: '#3b82f6', trailer: 'https://www.youtube.com/embed/jS9wKKVSMCM' },
+    { id: '8bc8dba9-bb2d-4b8f-bb1e-c6a4a790adb9', title: 'Beyblade X', emoji: '🌠', rating: '7.2', color: '#ffd60a', trailer: 'https://www.youtube.com/embed/4XYhIH9CXdM' },
+    { id: '518f1ae3-2bde-4e93-b5e1-71927f45eded', title: 'Yo-kai Watch', emoji: '💀', rating: '7.0', color: '#a855f7', trailer: 'https://www.youtube.com/embed/3QFNhbdUFV8' },
   ];
   const recsGrid = document.getElementById('kodomo-recs');
   if (recsGrid) {
     recsGrid.innerHTML = kodomoAnime.map(a => `
       <div class="anime-card reveal">
-        <div class="anime-card-poster"><div class="poster-placeholder" style="background: linear-gradient(135deg, ${a.color}22, ${a.color}08)"><span style="font-size:3rem">${a.emoji}</span></div><div class="anime-card-overlay"><button class="card-watch-btn" onclick="openTrailer('${a.trailer}', '${a.title.toLowerCase().replace(/[^a-z0-9]/g, '')}', 'kodomomuke', '${a.title}')">▶ Watch</button></div></div>
+        <div class="anime-card-poster"><div class="poster-placeholder" style="background: linear-gradient(135deg, ${a.color}22, ${a.color}08)"><span style="font-size:3rem">${a.emoji}</span></div><div class="anime-card-overlay"><button class="card-watch-btn" onclick="openTrailer('${a.trailer}', '${a.id}', 'kodomomuke', '${a.title}')">▶ Watch</button></div></div>
         <div class="anime-card-info"><div class="anime-card-title">${a.title}</div><div class="anime-card-meta"><span class="anime-genre-tag kodomomuke">Kodomomuke</span><span class="anime-card-rating">⭐ ${a.rating}</span></div></div>
       </div>`).join('');
   }

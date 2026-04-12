@@ -1310,8 +1310,20 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   font-size: 0.87rem;
   color: var(--text2);
 }
-.form-toggle span { color: var(--accent); cursor: pointer; font-weight: 600; }
-.form-toggle span:hover { text-decoration: underline; }
+.form-toggle span,
+.form-toggle .toggle-btn {
+  color: var(--accent);
+  cursor: pointer;
+  font-weight: 600;
+}
+.form-toggle .toggle-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+}
+.form-toggle span:hover,
+.form-toggle .toggle-btn:hover { text-decoration: underline; }
 
 /* ---------- Footer ---------- */
 .site-footer {

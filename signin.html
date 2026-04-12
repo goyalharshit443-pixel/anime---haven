@@ -155,7 +155,7 @@
 
     <div class="form-toggle">
       <span id="toggle-text">New to Anime Haven? </span>
-      <span id="toggle-mode"><span id="toggle-span-text">Create account</span></span>
+      <button type="button" id="toggle-mode" class="toggle-btn"><span id="toggle-span-text">Create account</span></button>
     </div>
   </div>
 </main>
@@ -194,18 +194,29 @@
     formSuccess.classList.remove('show');
   }
 
+  function updateAuthForm() {
+    if (formTitle) formTitle.textContent = isSignUp ? 'Create Account' : 'Welcome Back';
+    if (formSubTitle) formSubTitle.textContent = isSignUp ? 'Join the Anime Haven community' : 'Sign in to your account';
+    if (submitBtn) submitBtn.textContent = isSignUp ? 'Create Account' : 'Sign In';
+    const toggleText = document.getElementById('toggle-text');
+    const toggleSpanText = document.getElementById('toggle-span-text');
+    if (toggleText) toggleText.textContent = isSignUp ? 'Already have an account? ' : 'New to Anime Haven? ';
+    if (toggleSpanText) toggleSpanText.textContent = isSignUp ? 'Sign In' : 'Create account';
+  }
+
+  function setAuthMode(signup) {
+    isSignUp = signup;
+    clearMessages();
+    updateAuthForm();
+  }
+
   if (toggleLink) {
-    toggleLink.addEventListener('click', () => {
-      isSignUp = !isSignUp;
-      clearMessages();
-      if (formTitle) formTitle.textContent = isSignUp ? 'Create Account' : 'Welcome Back';
-      if (formSubTitle) formSubTitle.textContent = isSignUp ? 'Join the Anime Haven community' : 'Sign in to your account';
-      if (submitBtn) submitBtn.textContent = isSignUp ? 'Create Account' : 'Sign In';
-      const toggleText = document.getElementById('toggle-text');
-      const toggleSpanText = document.getElementById('toggle-span-text');
-      if (toggleText) toggleText.textContent = isSignUp ? 'Already have an account? ' : 'New to Anime Haven? ';
-      if (toggleSpanText) toggleSpanText.textContent = isSignUp ? 'Sign In' : 'Create account';
-    });
+    toggleLink.addEventListener('click', () => setAuthMode(!isSignUp));
+  }
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mode') === 'signup') {
+    setAuthMode(true);
   }
 
   if (signinForm) {

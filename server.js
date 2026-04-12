@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 3000;
 // Google Auth Client
 // Replace 'YOUR_GOOGLE_CLIENT_ID' with your actual Google OAuth Client ID
 // Get it from: https://console.cloud.google.com/apis/credentials
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || 'YOUR_GOOGLE_CLIENT_ID'; // Replace this later
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '801604685506-3qle7luqemvsl42s31h83hkk8dio9n61.apps.googleusercontent.com'; // Replace this later
 const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 // ---- Middleware ----

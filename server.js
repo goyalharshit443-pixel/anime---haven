@@ -156,17 +156,75 @@ app.post('/api/animes/:category', authenticateContributor, async (req, res) => {
     const { category } = req.params;
     if (!allowedTables.includes(category)) return res.status(400).json({ error: 'Invalid anime category.' });
 
-    const { title, author, video_url, photo_url, tags } = req.body;
+    const { title, author, description, video_url, photo_url, tags } = req.body;
     if (!title) return res.status(400).json({ error: 'Title is required.' });
 
     const id = uuidv4();
     const db = await getDB();
-    await db.run(`INSERT INTO ${category} (id, title, author, video_url, photo_url, tags) VALUES (?, ?, ?, ?, ?, ?)`, 
-      [id, title, author, video_url, photo_url, tags]);
+    await db.run(`INSERT INTO ${category} (id, title, author, description, video_url, photo_url, tags) VALUES (?, ?, ?, ?, ?, ?, ?)`, 
+      [id, title, author, description, video_url, photo_url, tags]);
 
     res.status(201).json({ message: 'Anime added successfully!', id });
   } catch (err) {
     console.error('Add anime error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.get('/api/anime/:category/:id', async (req, res) => {
+  try {
+    const { category, id } = req.params;
+    if (!allowedTables.includes(category)) return res.status(400).json({ error: 'Invalid anime category.' });
+
+    const db = await getDB();
+    const anime = await db.get(`SELECT *, '${category}' AS category FROM ${category} WHERE id = ?`, [id]);
+    if (!anime) return res.status(404).json({ error: 'Anime not found.' });
+
+    res.json({ anime });
+  } catch (err) {
+    console.error('Anime detail error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.get('/api/anime/:category/:id/episodes', async (req, res) => {
+  try {
+    const { category, id } = req.params;
+    if (!allowedTables.includes(category)) return res.status(400).json({ error: 'Invalid anime category.' });
+
+    const db = await getDB();
+    const episodes = await db.all(
+      'SELECT id, episode_number, title, description, duration, video_url, released_at FROM episodes WHERE anime_id = ? AND category = ? ORDER BY episode_number ASC',
+      [id, category]
+    );
+
+    res.json({ episodes });
+  } catch (err) {
+    console.error('Episode fetch error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.post('/api/anime/:category/:id/episodes', authenticateContributor, async (req, res) => {
+  try {
+    const { category, id } = req.params;
+    if (!allowedTables.includes(category)) return res.status(400).json({ error: 'Invalid anime category.' });
+
+    const { title, episode_number, description, duration, video_url, released_at } = req.body;
+    if (!title || !video_url || typeof episode_number !== 'number') {
+      return res.status(400).json({ error: 'Episode title, number, and video_url are required.' });
+    }
+
+    const episodeId = uuidv4();
+    const db = await getDB();
+    await db.run(
+      'INSERT INTO episodes (id, anime_id, category, episode_number, title, description, duration, video_url, released_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [episodeId, id, category, episode_number, title, description, duration, video_url, released_at]
+    );
+
+    res.status(201).json({ message: 'Episode added successfully!', episodeId });
+  } catch (err) {
+    console.error('Add episode error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 });

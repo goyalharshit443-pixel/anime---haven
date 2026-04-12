@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anime Details — Anime Haven</title>
+  <meta name="description" content="View full anime details, episodes, and play from the Anime Haven streamer." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='18' stroke='url(%23logoGrad)' stroke-width='2' fill='none'/%3E%3Cpath d='M20 8 L26 16 L20 13 L14 16 Z' fill='url(%23logoGrad)'/%3E%3Cpath d='M12 18 Q20 30 28 18' stroke='url(%23logoGrad)' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='15' cy='20' r='2' fill='url(%23logoGrad)'/%3E%3Ccircle cx='25' cy='20' r='2' fill='url(%23logoGrad)'/%3E%3Cdefs%3E%3ClinearGradient id='logoGrad' x1='0' y1='0' x2='40' y2='40' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0%25' stop-color='%23e94560'/%3E%3Cstop offset='100%25' stop-color='%23a855f7'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .anime-detail-page { padding: 4rem 1.5rem 3rem; max-width: 1300px; margin: 0 auto; }
+    .anime-detail-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; }
+    .anime-detail-header h1 { margin: 0; font-size: clamp(2rem, 4vw, 3.5rem); letter-spacing: -0.04em; }
+    .anime-detail-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.7rem 1rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); font-weight: 700; text-transform: uppercase; font-size: 0.82rem; }
+    .anime-detail-grid { display: grid; grid-template-columns: 1.7fr 1fr; gap: 2rem; align-items: start; }
+    .anime-detail-card, .anime-player-card, .episodes-card { background: rgba(12, 12, 24, 0.92); border: 1px solid rgba(255,255,255,0.08); border-radius: 28px; overflow: hidden; box-shadow: 0 40px 80px rgba(0,0,0,0.18); }
+    .anime-detail-card { min-height: 540px; display: grid; grid-template-rows: minmax(280px, auto) auto; }
+    .anime-cover { min-height: 320px; background-size: cover; background-position: center; position: relative; }
+    .anime-cover::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.60) 65%, rgba(0,0,0,0.88) 100%); }
+    .anime-cover-details { position: absolute; left: 0; bottom: 0; width: 100%; padding: 1.5rem; color: white; display: flex; justify-content: space-between; gap: 1rem; align-items: flex-end; }
+    .anime-cover-details .hero-meta { display: grid; gap: 0.5rem; }
+    .anime-cover-details .hero-meta span { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; color: rgba(255,255,255,0.82); }
+    .anime-detail-body { padding: 2rem; display: grid; gap: 1.5rem; }
+    .anime-detail-body h2 { margin: 0; font-size: 1.4rem; }
+    .anime-detail-body p { color: rgba(255,255,255,0.78); line-height: 1.8; }
+    .anime-info-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .anime-info-row { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 1rem 1.25rem; }
+    .anime-info-row strong { display: block; color: var(--accent); margin-bottom: 0.35rem; }
+    .anime-player-card { display: grid; gap: 1.5rem; padding: 2rem; }
+    .anime-player-card h3 { margin: 0; font-size: 1.4rem; }
+    .anime-player-frame { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 24px; overflow: hidden; }
+    .anime-player-frame iframe { width: 100%; height: 100%; border: 0; }
+    .episode-item { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .episode-item:last-child { border-bottom: none; }
+    .episode-item h4 { margin: 0; font-size: 1rem; }
+    .episode-meta { color: rgba(255,255,255,0.7); font-size: 0.91rem; }
+    .episode-button { border: 1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.06); color: white; padding: 0.75rem 1rem; border-radius: 999px; cursor: pointer; transition: background 0.25s ease, transform 0.2s ease; }
+    .episode-button:hover { background: rgba(233,69,96,0.18); transform: translateY(-1px); }
+    .empty-state { padding: 2rem; color: rgba(255,255,255,0.72); text-align: center; }
+    .anime-detail-actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
+    .anime-detail-actions .btn-outline { padding: 0.95rem 1.4rem; border-radius: 999px; }
+    @media (max-width: 960px) {
+      .anime-detail-grid { grid-template-columns: 1fr; }
+      .anime-detail-card { min-height: auto; }
+      .anime-cover-details { position: static; background: none; padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <header id="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-text">Anime<span class="logo-accent">Haven</span></span>
+      </a>
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="shonen.html" class="nav-link">Shonen</a>
+        <a href="shojo.html" class="nav-link">Shojo</a>
+        <a href="seinen.html" class="nav-link">Seinen</a>
+        <a href="josei.html" class="nav-link">Josei</a>
+        <a href="kodomomuke.html" class="nav-link">Kodomomuke</a>
+      </nav>
+      <div class="header-actions">
+        <a href="signin.html" class="btn btn-outline">Sign In</a>
+        <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+    <div class="mobile-nav" id="mobile-nav">
+      <a href="index.html">Home</a>
+      <a href="shonen.html">Shonen</a>
+      <a href="shojo.html">Shojo</a>
+      <a href="seinen.html">Seinen</a>
+      <a href="josei.html">Josei</a>
+      <a href="kodomomuke.html">Kodomomuke</a>
+      <a href="signin.html">Sign In</a>
+    </div>
+  </header>
+
+  <main class="anime-detail-page">
+    <div class="anime-detail-header">
+      <div>
+        <div class="anime-detail-badge" id="category-badge">Genre</div>
+        <h1 id="detail-title">Loading anime...</h1>
+      </div>
+      <div class="anime-detail-actions">
+        <a href="index.html" class="btn btn-outline">Back to Home</a>
+        <a href="#episodes" class="btn btn-primary">See Episodes</a>
+      </div>
+    </div>
+
+    <div class="anime-detail-grid">
+      <section class="anime-detail-card">
+        <div class="anime-cover" id="anime-cover" style="background-image: linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.85)), url('images/img1.jpg');">
+          <div class="anime-cover-details">
+            <div class="hero-meta">
+              <span id="author-meta"><strong>Author:</strong> <span>Unknown</span></span>
+              <span id="rating-meta"><strong>Rating:</strong> <span>--</span></span>
+              <span id="year-meta"><strong>Year:</strong> <span>--</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="anime-detail-body">
+          <div>
+            <h2>About this anime</h2>
+            <p id="anime-description">Fetching full details from the Anime Haven database...</p>
+          </div>
+          <div class="anime-info-grid">
+            <div class="anime-info-row"><strong>Genre</strong><span id="genre-value">—</span></div>
+            <div class="anime-info-row"><strong>Episodes</strong><span id="episode-count">—</span></div>
+            <div class="anime-info-row"><strong>Studio / Author</strong><span id="author-value">—</span></div>
+            <div class="anime-info-row"><strong>Tags</strong><span id="tags-value">—</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="anime-player-card">
+        <div>
+          <h3 id="player-title">Streamer</h3>
+          <p id="player-subtitle">Select an episode to play it in the big Anime Haven stream.</p>
+        </div>
+        <div class="anime-player-frame">
+          <iframe id="anime-player-iframe" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
+        </div>
+      </section>
+    </div>
+
+    <section class="episodes-card" id="episodes">
+      <div class="anime-detail-body">
+        <h2>Episodes</h2>
+        <div id="episode-list" class="episode-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast"></div>
+  <script src="config.js"></script>
+  <script src="main.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const category = params.get('category');
+    const animeId = params.get('id');
+
+    const detailTitle = document.getElementById('detail-title');
+    const categoryBadge = document.getElementById('category-badge');
+    const authorMeta = document.getElementById('author-meta');
+    const ratingMeta = document.getElementById('rating-meta');
+    const yearMeta = document.getElementById('year-meta');
+    const animeDescription = document.getElementById('anime-description');
+    const genreValue = document.getElementById('genre-value');
+    const episodeCount = document.getElementById('episode-count');
+    const authorValue = document.getElementById('author-value');
+    const tagsValue = document.getElementById('tags-value');
+    const animeCover = document.getElementById('anime-cover');
+    const playerTitle = document.getElementById('player-title');
+    const playerSubtitle = document.getElementById('player-subtitle');
+    const playerFrame = document.getElementById('anime-player-iframe');
+    const episodeList = document.getElementById('episode-list');
+
+    function setPlayerSource(url, label) {
+      if (!url) return;
+      playerTitle.textContent = label || 'Anime Haven Stream';
+      playerSubtitle.textContent = `Now playing: ${label}`;
+      playerFrame.src = url + '?autoplay=1';
+    }
+
+    function showEpisodeFallbackMessage(message) {
+      episodeList.innerHTML = `<div class="empty-state">${message}</div>`;
+    }
+
+    function renderEpisodes(episodes) {
+      if (!episodes || episodes.length === 0) {
+        showEpisodeFallbackMessage('No episodes have been added yet. Contributors can add them through the dashboard.');
+        return;
+      }
+
+      episodeCount.textContent = `${episodes.length} episodes`;
+      episodeList.innerHTML = episodes.map(ep => `
+        <div class="episode-item">
+          <div>
+            <h4>Episode ${ep.episode_number}: ${ep.title || 'Untitled'}</h4>
+            <p class="episode-meta">${ep.duration || 'Unknown length'} • ${ep.released_at ? new Date(ep.released_at).toLocaleDateString() : 'Release date unknown'}</p>
+          </div>
+          <button class="episode-button" onclick="setPlayerSource('${String(ep.video_url || '').replace(/'/g, '&#39;')}', 'Episode ${ep.episode_number}: ${String(ep.title || 'Untitled').replace(/'/g, '&#39;')}')">Play</button>
+        </div>
+      `).join('');
+      const firstEpisode = episodes[0];
+      if (firstEpisode && firstEpisode.video_url) setPlayerSource(firstEpisode.video_url, `Episode ${firstEpisode.episode_number}: ${firstEpisode.title || 'Untitled'}`);
+    }
+
+    async function loadAnimeDetails() {
+      if (!category || !animeId) {
+        detailTitle.textContent = 'Anime missing';
+        animeDescription.textContent = 'No anime selected. Please open this page from a watch button or use the search result links.';
+        return;
+      }
+
+      let anime = null;
+      try {
+        const res = await fetch(`${API_BASE}/api/anime/${encodeURIComponent(category)}/${encodeURIComponent(animeId)}`);
+        if (res.ok) {
+          const data = await res.json();
+          anime = data.anime;
+        }
+      } catch (err) {
+        console.error('Detail fetch failed:', err);
+      }
+
+      if (!anime && window.animeData) {
+        anime = window.animeData.find(a => a.id === animeId && a.genre === category);
+        if (anime) {
+          anime.description = anime.description || `Discover ${anime.title}, the ${category} anime with high ratings and exciting story. Explore episodes and watch now.`;
+        }
+      }
+
+      if (!anime) {
+        detailTitle.textContent = 'Anime not found';
+        animeDescription.textContent = 'We could not locate this anime in the Anime Haven database. Check the link and try again.';
+        showEpisodeFallbackMessage('No episodes available.');
+        return;
+      }
+
+      detailTitle.textContent = anime.title;
+      categoryBadge.textContent = category.toUpperCase();
+      genreValue.textContent = category;
+      authorValue.textContent = anime.author || 'Unknown';
+      authorMeta.innerHTML = `<strong>Author:</strong> <span>${anime.author || 'Unknown'}</span>`;
+      ratingMeta.innerHTML = `<strong>Rating:</strong> <span>${anime.rating || 'N/A'}</span>`;
+      yearMeta.innerHTML = `<strong>Year:</strong> <span>${anime.year || 'Unknown'}</span>`;
+      animeDescription.textContent = anime.description || 'A powerful fan-favorite anime entry in the Anime Haven collection.';
+      tagsValue.textContent = anime.tags || 'No tags yet';
+
+      if (anime.photo_url || anime.img) {
+        animeCover.style.backgroundImage = `linear-gradient(180deg, rgba(0,0,0,0.1), rgba(0,0,0,0.85)), url('${anime.photo_url || anime.img}')`;
+      }
+
+      if (anime.video_url) {
+        setPlayerSource(anime.video_url, anime.title);
+      }
+
+      try {
+        const epRes = await fetch(`${API_BASE}/api/anime/${encodeURIComponent(category)}/${encodeURIComponent(animeId)}/episodes`);
+        if (epRes.ok) {
+          const epData = await epRes.json();
+          renderEpisodes(epData.episodes || []);
+          return;
+        }
+      } catch (err) {
+        console.error('Episode fetch failed:', err);
+      }
+
+      showEpisodeFallbackMessage('Unable to load episode list from the server right now.');
+    }
+
+    loadAnimeDetails();
+  </script>
+</body>
+</html>

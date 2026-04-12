@@ -162,7 +162,11 @@ if (searchInput) {
 }
 
 function navigateToAnime(id, genre) {
-  window.location.href = `${genre}.html#${id}`;
+  window.location.href = `anime.html?category=${encodeURIComponent(genre)}&id=${encodeURIComponent(id)}`;
+}
+
+function goToAnimePage(id, category) {
+  window.location.href = `anime.html?category=${encodeURIComponent(category)}&id=${encodeURIComponent(id)}`;
 }
 
 // ---------- Render Trending Row ----------
@@ -233,6 +237,11 @@ async function renderTrending() {
 
 // ---------- Trailer Modal ----------
 window.openTrailer = function(url, animeId, category, title) {
+  if (animeId && category) {
+    goToAnimePage(animeId, category);
+    return;
+  }
+
   const modal = document.getElementById('trailer-modal');
   const iframe = document.getElementById('trailer-iframe');
   if (!modal || !iframe) return;

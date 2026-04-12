@@ -77,10 +77,24 @@ async function initDB() {
       id TEXT PRIMARY KEY,
       title TEXT NOT NULL,
       author TEXT,
+      description TEXT,
       video_url TEXT,
       photo_url TEXT,
       tags TEXT,
       views INTEGER DEFAULT 0,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE IF NOT EXISTS episodes (
+      id TEXT PRIMARY KEY,
+      anime_id TEXT NOT NULL,
+      category TEXT NOT NULL,
+      episode_number INTEGER,
+      title TEXT,
+      description TEXT,
+      duration TEXT,
+      video_url TEXT,
+      released_at DATETIME,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
 
@@ -119,6 +133,11 @@ async function initDB() {
   for (const table of alterTables) {
     try {
       await db.exec(`ALTER TABLE ${table} ADD COLUMN views INTEGER DEFAULT 0;`);
+    } catch (err) {
+      // Column already exists or cannot be added; ignore safely.
+    }
+    try {
+      await db.exec(`ALTER TABLE ${table} ADD COLUMN description TEXT;`);
     } catch (err) {
       // Column already exists or cannot be added; ignore safely.
     }

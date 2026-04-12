@@ -3,7 +3,7 @@ services:
     name: anime-haven
     runtime: node
     plan: free
-    buildCommand: npm install --ignore-scripts && npm rebuild sqlite3 --build-from-source --python=/usr/bin/python3 && npm run build
+    buildCommand: npm install --ignore-scripts && npm rebuild sqlite3 --build-from-source --python=/usr/bin/python3
     startCommand: node server.js
     envVars:
       - key: NODE_ENV

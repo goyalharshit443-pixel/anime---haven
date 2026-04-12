@@ -55,16 +55,53 @@
   window.addEventListener('resize', () => { resize(); createParticles(); });
 })();
 
-// ---------- Header Scroll Shrink ----------
+// ---------- Header Scroll Behavior ----------
 const header = document.getElementById('site-header');
 let lastScroll = 0;
+let scrollDirection = 'down';
+
+function isHomePage() {
+  return window.location.pathname === '/' || window.location.pathname.endsWith('index.html');
+}
+
 window.addEventListener('scroll', () => {
   const s = window.scrollY;
   if (header) {
-    header.classList.toggle('scrolled', s > 80);
+    const isHome = isHomePage();
+    
+    if (isHome) {
+      header.classList.toggle('home-collapsed', s > 200);
+      header.classList.remove('header-hidden', 'header-visible');
+    } else {
+      header.classList.remove('home-collapsed');
+      
+      if (s > 300) {
+        if (s > lastScroll) {
+          scrollDirection = 'down';
+          header.classList.add('header-hidden');
+          header.classList.remove('header-visible');
+        } else {
+          scrollDirection = 'up';
+          header.classList.remove('header-hidden');
+          header.classList.add('header-visible');
+        }
+      } else {
+        header.classList.remove('header-hidden');
+        header.classList.add('header-visible');
+      }
+    }
   }
   lastScroll = s;
 }, { passive: true });
+
+if (header && !isHomePage()) {
+  document.addEventListener('mousemove', (e) => {
+    if (e.clientY < 50 && header.classList.contains('header-hidden')) {
+      header.classList.remove('header-hidden');
+      header.classList.add('header-visible');
+    }
+  });
+}
 
 // ---------- Mobile Nav ----------
 const hamburger = document.getElementById('hamburger');
@@ -190,7 +227,7 @@ async function renderTrending() {
               : `<div class="poster-placeholder" style="background: linear-gradient(135deg, ${color}22, ${color}08)"><span style="font-size:3.5rem">${emoji}</span></div>`
             }
             <div class="anime-card-overlay">
-              <button class="card-watch-btn" onclick="openTrailer('${anime.video_url}', '${anime.id}', '${anime.category}', '${anime.title}')">▶ Watch Trailer</button>
+              <button class="card-watch-btn" onclick="openTrailer('${anime.video_url}', '${anime.id}', '${anime.category}', '${anime.title}')">▶ Watch</button>
             </div>
           </div>
           <div class="anime-card-info">
@@ -214,7 +251,7 @@ async function renderTrending() {
             : `<div class="poster-placeholder" style="background: linear-gradient(135deg, ${anime.color}22, ${anime.color}08)"><span style="font-size:3.5rem">${anime.emoji}</span></div>`
           }
           <div class="anime-card-overlay">
-            <button class="card-watch-btn" onclick="openTrailer('${anime.trailer}', '${anime.id}', '${anime.genre}', '${anime.title}')">▶ Watch Trailer</button>
+            <button class="card-watch-btn" onclick="openTrailer('${anime.trailer}', '${anime.id}', '${anime.genre}', '${anime.title}')">▶ Watch</button>
           </div>
         </div>
         <div class="anime-card-info">

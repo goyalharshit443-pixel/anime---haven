@@ -99,7 +99,7 @@
           </div>
           <div class="spotlight-actions">
             <button class="btn-primary" style="background: linear-gradient(135deg,#d4a373,#8d5524)" onclick="addToFavourites('apothecary','The Apothecary Diaries', 'josei')">+ Add to Favourites</button>
-            <button class="btn-outline" onclick="openTrailer('https://www.youtube.com/embed/DfJE_h4MeFs')">▶ Watch Trailer</button>
+            <button class="btn-outline" onclick="openTrailer('https://www.youtube.com/embed/DfJE_h4MeFs')">▶ Watch</button>
           </div>
         </div>
       </div>
@@ -146,7 +146,7 @@
   if (recsGrid) {
     recsGrid.innerHTML = joseiAnime.map(a => `
       <div class="anime-card reveal">
-        <div class="anime-card-poster"><div class="poster-placeholder" style="background: linear-gradient(135deg, ${a.color}22, ${a.color}08)"><span style="font-size:3rem">${a.emoji}</span></div><div class="anime-card-overlay"><button class="card-watch-btn" onclick="openTrailer('${a.trailer}')">▶ Watch Trailer</button></div></div>
+        <div class="anime-card-poster"><div class="poster-placeholder" style="background: linear-gradient(135deg, ${a.color}22, ${a.color}08)"><span style="font-size:3rem">${a.emoji}</span></div><div class="anime-card-overlay"><button class="card-watch-btn" onclick="openTrailer('${a.trailer}', '${a.title.toLowerCase().replace(/[^a-z0-9]/g, '')}', 'josei', '${a.title}')">▶ Watch</button></div></div>
         <div class="anime-card-info"><div class="anime-card-title">${a.title}</div><div class="anime-card-meta"><span class="anime-genre-tag josei">Josei</span><span class="anime-card-rating">⭐ ${a.rating}</span></div></div>
       </div>`).join('');
   }

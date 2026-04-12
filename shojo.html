@@ -127,7 +127,7 @@
           </div>
           <div class="spotlight-actions">
             <button class="btn-primary" style="background: linear-gradient(135deg,#ff9aa2,#c7ceea); color:#1a0a1a" onclick="addToFavourites('fruits-basket','Fruits Basket', 'shojo')">+ Add to Favourites</button>
-            <button class="btn-outline" onclick="openTrailer('https://www.youtube.com/embed/Mv-2GGiCr0c')">▶ Watch Trailer</button>
+            <button class="btn-outline" onclick="openTrailer('https://www.youtube.com/embed/Mv-2GGiCr0c')">▶ Watch</button>
           </div>
         </div>
       </div>
@@ -176,7 +176,7 @@
       <div class="anime-card reveal">
         <div class="anime-card-poster">
           ${a.img ? `<img src="${a.img}" alt="${a.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" />` : `<div class="poster-placeholder" style="background: linear-gradient(135deg, ${a.color}22, ${a.color}08)"><span style="font-size:3rem">${a.emoji}</span></div>`}
-          <div class="anime-card-overlay"><button class="card-watch-btn" onclick="openTrailer('${a.trailer}')">▶ Watch Trailer</button></div>
+          <div class="anime-card-overlay"><button class="card-watch-btn" onclick="openTrailer('${a.trailer}', '${a.title.toLowerCase().replace(/[^a-z0-9]/g, '')}', 'shojo', '${a.title}')">▶ Watch</button></div>
         </div>
         <div class="anime-card-info">
           <div class="anime-card-title">${a.title}</div>

@@ -80,7 +80,7 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 100;
-  transition: var(--transition);
+  transition: transform 0.3s ease, background 0.3s ease;
 }
 .header-inner {
   display: flex;
@@ -99,6 +99,29 @@ button { cursor: pointer; font-family: inherit; border: none; background: none; 
 #site-header.scrolled .header-inner {
   height: 56px;
   background: rgba(13,13,20,0.95);
+}
+#site-header.home-collapsed .header-inner {
+  height: 56px;
+  padding: 0 1rem;
+  gap: 0;
+}
+#site-header.home-collapsed .main-nav,
+#site-header.home-collapsed .header-actions,
+#site-header.home-collapsed .mobile-nav {
+  display: none;
+}
+#site-header.home-collapsed .logo-text {
+  font-size: 0;
+}
+#site-header.home-collapsed .logo-icon {
+  width: 32px;
+  height: 32px;
+}
+#site-header.header-hidden {
+  transform: translateY(-100%);
+}
+#site-header.header-visible {
+  transform: translateY(0);
 }
 .logo {
   display: flex;

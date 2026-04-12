@@ -102,7 +102,7 @@
           </div>
           <div class="spotlight-actions">
             <button class="btn-primary" style="background: linear-gradient(135deg,#ffd60a,#f09000); color:#1a1a00" onclick="addToFavourites('pokemon','Pokémon Horizons', 'kodomomuke')">+ Add to Favourites</button>
-            <button class="btn-outline" onclick="openTrailer('https://www.youtube.com/embed/T3DnFIIqEkE')">▶ Watch Trailer</button>
+            <button class="btn-outline" onclick="openTrailer('https://www.youtube.com/embed/T3DnFIIqEkE')">▶ Watch</button>
           </div>
         </div>
       </div>
@@ -149,7 +149,7 @@
   if (recsGrid) {
     recsGrid.innerHTML = kodomoAnime.map(a => `
       <div class="anime-card reveal">
-        <div class="anime-card-poster"><div class="poster-placeholder" style="background: linear-gradient(135deg, ${a.color}22, ${a.color}08)"><span style="font-size:3rem">${a.emoji}</span></div><div class="anime-card-overlay"><button class="card-watch-btn" onclick="openTrailer('${a.trailer}')">▶ Watch Trailer</button></div></div>
+        <div class="anime-card-poster"><div class="poster-placeholder" style="background: linear-gradient(135deg, ${a.color}22, ${a.color}08)"><span style="font-size:3rem">${a.emoji}</span></div><div class="anime-card-overlay"><button class="card-watch-btn" onclick="openTrailer('${a.trailer}', '${a.title.toLowerCase().replace(/[^a-z0-9]/g, '')}', 'kodomomuke', '${a.title}')">▶ Watch</button></div></div>
         <div class="anime-card-info"><div class="anime-card-title">${a.title}</div><div class="anime-card-meta"><span class="anime-genre-tag kodomomuke">Kodomomuke</span><span class="anime-card-rating">⭐ ${a.rating}</span></div></div>
       </div>`).join('');
   }

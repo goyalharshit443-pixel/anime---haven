@@ -69,3 +69,15 @@ Use a service like Render or Railway.
 - If frontend and backend are on the same origin, leave `API_BASE_URL` blank.
 - If the backend is separate, all API fetches will use `config.js`.
 - The Google OAuth client ID must be the same in both frontend and backend.
+
+## Automated Scraper
+
+A Python scraper framework is included under `scrapers/`.
+
+```bash
+python scrapers/scraper.py --url "https://example.com/anime/123" --source mock --category shonen
+```
+
+Use `--dry-run` to inspect the parsed metadata without writing to the database.
+
+The scraper stores anime metadata and episodes in `data/database.sqlite` and can be extended with site-specific parsers in `scrapers/site_parsers.py`.
